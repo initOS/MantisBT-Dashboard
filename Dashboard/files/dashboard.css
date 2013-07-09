@@ -1,0 +1,154 @@
+#dashboard-container{
+	display: block;
+	width: 100%;
+	margin:0;
+	padding:0;
+}
+
+.dashboard-hide, .dashboard-drag, .dashboard-edit, .dashboard-delete, .dashboard-add{
+	display:inline-block;
+	width: 16px;
+	height: 16px;
+	text-align: center;
+	display: inline;
+	font-size: 0.6em;
+	position: relative;
+	margin: 0 2px;
+	padding:0;
+	cursor: pointer;
+}
+.dashboard-hide, .dashboard-drag, .dashboard-edit, .dashboard-delete { float:right; }
+
+.show-icon, .hide-icon, .drag-icon, .edit-icon, .delete-icon, .add-icon{ width: 16px; height: 16px; display:inline-block; }
+.show-icon{	position: relative;	top:3px; }
+
+.show-icon { background-image:url(plugin_file.php?file=Dashboard/show.png); background-position:0px 0px; }
+.hide-icon { background-image:url(plugin_file.php?file=Dashboard/hide.png); background-position:0px 0px; }
+.drag-icon { background-image:url(plugin_file.php?file=Dashboard/drag.png); background-position:0px 0px; }
+.edit-icon { background-image:url(plugin_file.php?file=Dashboard/edit.png); background-position:0px 0px; }
+.delete-icon { background-image:url(plugin_file.php?file=Dashboard/delete.png); background-position:0px 0px; }
+.add-icon { background-image:url(plugin_file.php?file=Dashboard/plus.png); background-position:0px 0px; }
+
+.hide-icon:hover, .hide-icon:focus { background-position:0px -16px; }
+.drag-icon:hover, .drag-icon:focus { background-position:0px -16px; }
+.edit-icon:hover, .edit-icon:focus { background-position:0px -16px; }
+.delete-icon:hover, .delete-icon:focus { background-position:0px -16px; }
+.add-icon:hover, .add-icon:focus { background-position:0px -16px; }
+
+.dialog-form-field{
+	display: block;
+	padding: 10px;
+}
+
+span.dashboard-show{ display: inline; float:left; }
+
+ul{
+	list-style-type: none;
+	margin: 0;
+	padding: 5px;
+}
+
+#dashboard-sortable{
+	width: 100%;
+	margin:0;
+	padding:0;
+	display:block;
+}
+
+#dashboard-sortable li{
+	margin: 4px;
+	padding: 0;
+	float: left;
+	width: 32.3%;
+	list-style: none;
+	display: table;
+}
+
+.dashboard-box-placeholder{
+	background-color: #ddd;
+}
+
+#dashboard-visibility-list-container{
+	padding: 5px;
+}
+
+#dashboard-visibility-list{
+	list-style-type: none;
+	height: auto;
+	width: auto;
+	display: block;
+	padding: 0;
+	border: 1px solid #666;
+	margin: 5px 0 0 0;
+}
+
+.visibility-list-item-raw, .visibility-list-item-filler{
+	display: inline-block;
+	position: relative;
+	border-right: 1px solid #666;
+	top: -5px;
+	padding: 5px 10px;
+	margin: 10px 0 0 0;
+}
+
+.visibility-list-item{
+	display: inline-block;
+	cursor: pointer;
+	border-right: 1px solid #666;
+	padding: 0 10px 5px 10px;
+	margin: 0;
+	position: relative;
+	top: -5px;
+}
+
+.visibility-list-item:hover, .visibility-list-item:focus{
+	color: #666;
+}
+
+.dashboard-form-text{
+	padding: 0 5px;
+}
+
+form.show-box{
+	display: inline;
+}
+
+.dashboard-label{
+	display: inline-block;
+	width: 100px;
+	text-align: right;
+	padding: 0 10px 0 0;
+}
+
+.dashboard-input{
+	display: inline-block;
+}
+
+.create-new-filter-link{
+	margin: 0 0 0 10px;
+}
+
+
+.error{
+	color: #B81900;
+	font-weight: bolder;
+}
+/**
+ * See: http://nicolasgallagher.com/micro-clearfix-hack/
+ */
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
+}
+
+/**
+ * For IE 6/7 only
+ */
+.cf {
+    *zoom: 1;
+}

@@ -1,0 +1,50 @@
+<?php
+# MantisBT Dashboard Plugin
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
+
+$s_plugin_Dashboard_ = '';
+$s_plugin_Dashboard_menuname = 'Dashboard';
+$s_plugin_Dashboard_title = 'InitOS Dashboard';
+$s_plugin_Dashboard_description = 'Interactivly customizable Dashboard view of bugs.';
+$s_plugin_Dashboard_config_title = 'Dashboard configuration';
+$s_plugin_Dashboard_boxes_view = 'Boxes view';
+$s_plugin_Dashboard_boxes_view_default = 'Default boxes';
+$s_plugin_Dashboard_boxes_view_custom = 'Custom boxes';
+
+$s_plugin_Dashboard_cancel = 'Cancel';
+
+$s_plugin_Dashboard_hide_box = 'Hide box';
+$s_plugin_Dashboard_show_box = 'Display box';
+$s_plugin_Dashboard_drag_box = 'Change box position: click & pull';
+$s_plugin_Dashboard_edit_box = 'Edit box';
+$s_plugin_Dashboard_save_box = 'Save box';
+$s_plugin_Dashboard_delete_box = 'Delete box';
+$s_plugin_Dashboard_display_box = 'Display box:';
+$s_plugin_Dashboard_all_visible = 'All are visible at the moment';
+$s_plugin_Dashboard_has_been_deleted = '" has been removed from the dashboard.';
+
+$s_plugin_Dashboard_create_new_box = 'Create new box';
+$s_plugin_Dashboard_confirm_delete_box = 'Delete this box?';
+$s_plugin_Dashboard_filter = 'Filter';
+$s_plugin_Dashboard_box_title = 'Box title';
+$s_plugin_Dashboard_create_new_filter = 'Create new filter';
+$s_plugin_Dashboard_no_filters_available = 'There are no custom filters available.';
+$s_plugin_Dashboard_untitled = 'untitled';
+$s_plugin_Dashboard_error_already_exists = '" is already existent!<br>Please choose another title or filter.';
+$s_plugin_Dashboard_error_the_box_with_title = 'The box with title "';
+$s_plugin_Dashboard_error_and_filter_name = '" and with filter "';
+
+$s_plugin_Dashboard_error_filter_deleted = 'The filter you want to use is not available or has been deleted.<br>Please choose another or create a new filter!';
+$s_plugin_Dashboard_error = 'Error'; 

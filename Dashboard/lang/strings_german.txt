@@ -1,0 +1,50 @@
+<?php
+# MantisBT Dashboard Plugin
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
+
+$s_plugin_Dashboard_ = '';
+$s_plugin_Dashboard_menuname = 'Arbeitsplatz';
+$s_plugin_Dashboard_title = 'InitOS Dashboard';
+$s_plugin_Dashboard_description = 'Interaktiv anpassbare Arbeitsplatzansicht aller Fehler und Projektberichte.';
+$s_plugin_Dashboard_config_title = 'Arbeitsplatz Konfiguration';
+$s_plugin_Dashboard_boxes_view = 'Boxen Ansicht';
+$s_plugin_Dashboard_boxes_view_default = 'Standard-Boxen';
+$s_plugin_Dashboard_boxes_view_custom = 'Nutzerspezifische Boxen';
+
+$s_plugin_Dashboard_cancel = 'Abbrechen';
+
+$s_plugin_Dashboard_hide_box = 'Box verstecken';
+$s_plugin_Dashboard_show_box = 'Box anzeigen';
+$s_plugin_Dashboard_drag_box = 'Box-Position ändern: klicken & ziehen';
+$s_plugin_Dashboard_edit_box = 'Box bearbeiten';
+$s_plugin_Dashboard_save_box = 'Box speichern';
+$s_plugin_Dashboard_delete_box = 'Box löschen';
+$s_plugin_Dashboard_display_box = 'Box anzeigen:';
+$s_plugin_Dashboard_all_visible = 'alle werden angezeigt';
+$s_plugin_Dashboard_has_been_deleted = '" wurde vom Arbeitsplatz entfernt.';
+
+$s_plugin_Dashboard_create_new_box = 'neue Box erstellen';
+$s_plugin_Dashboard_confirm_delete_box = 'Diese Box löschen?';
+$s_plugin_Dashboard_filter = 'Filter';
+$s_plugin_Dashboard_box_title = 'Box-Name';
+$s_plugin_Dashboard_create_new_filter = 'neuen Filter erstellen';
+$s_plugin_Dashboard_no_filters_available = 'Es sind keine erweiterten Filter verfügbar.';
+$s_plugin_Dashboard_untitled = 'unbenannt';
+$s_plugin_Dashboard_error_already_exists = '" ist bereits vorhanden!<br>Bitte wählen Sie einen anderen Titel oder Filter.';
+$s_plugin_Dashboard_error_the_box_with_title = 'Die Box mit dem Titel "';
+$s_plugin_Dashboard_error_and_filter_name = '" und dem Filter "';
+
+$s_plugin_Dashboard_error_filter_deleted = 'Der Filter, den Sie nutzen wollen ist nicht verfügbar oder wurde gelöscht.<br>Bitte wählen Sie einen anderen oder erstellen Sie einen neuen Filter!';
+$s_plugin_Dashboard_error = 'Fehler';
