@@ -51,8 +51,8 @@ if($t_javascript_on){
 			);
 	
 	# return the JSON
-	$return_JASON = json_encode($return_data);
-	echo $return_JASON;
+	$return_JSON = json_encode($return_data);
+	echo $return_JSON;
 } else {
 	header("Location:" . plugin_page('dashboard'));
 }
