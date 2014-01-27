@@ -91,10 +91,13 @@ var setBoxVisibility = function(data) {
 	var boxElementId = '#dashboard-list-item-' + boxId;
 	var listItemElementId = '#visibility-list-item-' + boxId;
 	
+	console.log("visible: " + boxId + " - " + visible);
+	
 	if(visible) {
 		jQuery(boxElementId).fadeIn(function(){
 			setBoxesSize();
 		});
+		
 		jQuery(listItemElementId).remove();
 		if(jQuery('.visibility-list-item').size() == 0 ){
 			jQuery('#dashboard-visibility-list-container').append("<?php echo DashboardPrintAPI::get_visibility_list_item_html(null) ?>");
@@ -103,6 +106,7 @@ var setBoxVisibility = function(data) {
 		jQuery(boxElementId).fadeOut(function(){
 			setBoxesSize();
 		});
+		
 		jQuery('.visibility-list-item-filler').remove();
 		jQuery('#dashboard-visibility-list-container').append(linkHtml);
 	}
@@ -111,10 +115,12 @@ var setBoxVisibility = function(data) {
 var saveBoxVisibility = function(form){
 	var actionUrl = '<?php echo $t_set_dashboard_box_visibility_path ?>';
 	var boxId = form.children('input[name=box_id]').val();
-	var visible = form.children('input[name=visible]').val();
+	var visible = form.children('input[name=box-visible]').val();
 	var dataValues = { box_id : boxId,
 					   visible:  visible};
-		
+	
+	cosnsole.log("visible: " + boxId + " - " + visible );	
+	
 	handleAJAXCall(actionUrl, dataValues, setBoxVisibility, handleBoxVisibilityError);
 }
 
@@ -160,14 +166,14 @@ var editCustomBox = function(){
 	var boxTitle = jQuery("#edit-box-title").val();
 	var boxFilterId = jQuery("#dashboard-edit-box-dialog select[name=edit-custom-filter-select]").val();
 	
-	var visible = jQuery("#edit-box-visible-checkbox").attr('checked') ? 1 : 0;	
+	var visible = jQuery("#edit-box-visible-checkbox").prop('checked') ? 1 : 0;	
 	var boxId = jQuery("#delete-box-link input[name=box_id]").val();
 		
 	var actionUrl = "<?php echo $t_save_dashboard_custom_box_path ?>";
 	var dataValues = { title : boxTitle,
 					   filter_id: boxFilterId,
 					   visible: visible,
-					   box_id: boxId};		
+					   box_id: boxId};
 		
 	handleAJAXCall(actionUrl, dataValues, afterEditCustomBox, handleCreateCustomBoxError);
 };
@@ -193,7 +199,7 @@ var afterEditCustomBox = function(data){
 	var html = data["html"];
 	
 	jQuery("#dashboard-custom-box-" + boxId).replaceWith(html);
-	if(visible == 0){
+	if(!visible){
 		var boxElementId = '#dashboard-custom-box-' + boxId;
 		jQuery(boxElementId).parent("li").fadeOut();
 		jQuery('.visibility-list-item-filler').remove();
@@ -204,7 +210,7 @@ var afterEditCustomBox = function(data){
 var deleteCustomBox = function(data){		
 	var boxId = jQuery("#delete-box-link input[name=box_id]").val();
 	var actionUrl = "<?php echo $t_delete_dashboard_custom_box_path ?>";
-	var dataValues = { box_id: boxId };		
+	var dataValues = { box_id: boxId };
 		
 	handleAJAXCall(actionUrl, dataValues, afterDeleteCustomBox, handleCreateCustomBoxError);
 };
@@ -390,8 +396,7 @@ jQuery(document).ready(function(){
 	sortableElement.disableSelection();
 	
 	//on select changed => sendajax request to update project filter 
-	//jQuery(document).on('change', 'select[name=project_id]', function() { // for jQuery 1.7+
-	jQuery(document).delegate('select[name=project_id]', 'change', function() { // for jQuery 1.6.2
+	jQuery(document).on('change', 'select[name=project_id]', function() {
 		var select = jQuery(this);
 		var hiddenInput = select.parent('form').children('input[name=box_id]');
 		
@@ -413,26 +418,22 @@ jQuery(document).ready(function(){
 	
 	
 	//on hide clicked => hide box
-	//jQuery(document).on('click', 'form.hide-box', function() { // for jQuery 1.7+
-	jQuery(document).delegate('form.hide-box', 'click', function() { // for jQuery 1.6.2
+	jQuery(document).on('click', 'form.hide-box', function() {
 		saveBoxVisibility(jQuery(this));
 	});
 	
 	//on show clicked => show box
-	//jQuery(document).on('click', 'form.show-box', function() { // for jQuery 1.7+
-	jQuery(document).delegate('form.show-box', 'click', function() { // for jQuery 1.6.2	
+	jQuery(document).on('click', 'form.show-box', function() {
 		saveBoxVisibility(jQuery(this));
 	});
 	
 	//on show custom box clicked => show custom box
-	//jQuery(document).on('click', 'form.show-custom-box', function() { // for jQuery 1.7+
-	jQuery(document).delegate('form.show-custom-box', 'click', function() { // for jQuery 1.6.2	
+	jQuery(document).on('click', 'form.show-custom-box', function() {
 		saveCustomBoxVisibility(jQuery(this));
 	});
 	
 	//on edit clicked => open custom box edit dialog with certain values
-	//jQuery(document).on('click', 'form.edit-box', function() { // for jQuery 1.7+
-	jQuery(document).delegate('form.edit-box', 'click', function() { // for jQuery 1.6.2
+	jQuery(document).on('click', 'form.edit-box', function() {
 		var form = jQuery(this);
 		var boxId = form.children('input[name=box_id]').val();
 		var boxTitle = form.children('input[name=orig_box_title]').val();
@@ -441,8 +442,8 @@ jQuery(document).ready(function(){
 		jQuery("#delete-box-link input[name=box_id]").val(boxId);
 		jQuery("#edit-box-title").val(boxTitle);
 		jQuery("#edit-custom-filter-select option[value=" + boxFilterId + "]").attr("selected", "selected");
-		jQuery("#edit-box-visible-checkbox").attr("checked", "checked");
-		
+		jQuery("#edit-box-visible-checkbox").prop("checked", true);
+			
 		jQuery("#dashboard-edit-box-dialog").dialog("open");
 	});
 });

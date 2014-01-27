@@ -34,16 +34,16 @@ class DashboardPlugin extends MantisPlugin
 		$this->description = plugin_lang_get('description');	#description text
 		$this->page = 'config_page';							#configure page file
 
-		$this->version = '0.4.2';     	# Plugin version string
+		$this->version = '0.4.3';     	# Plugin version string
 		$this->requires = array(    	# Plugin dependencies, array of basename => version pairs
             'MantisCore' => '1.2.0',  	# Should always depend on an appropriate version of MantisBT
-            'jQuery' => '1.6.2',		# jQuery for AJAX calls (including jQueryUI 1.8.16)
-            							# plugin-link: https://github.com/tkalbitz/jquery
+            'jQuery' => '1.9.1',		# jQuery for AJAX calls (including jQueryUI v1.10.3)
+            							# plugin-link: https://github.com/initOS/jquery.git
 		);
 
-		$this->author = 'InitOS GmbH & Co. KG <Paul Götze,Markus Schneider>';         # Author/team name
-		$this->contact = 'info@initos.com';     # Author/team e-mail address
-		$this->url = '';            # Support webpage
+		$this->author = 'InitOS GmbH & Co. KG <Paul Götze,Markus Schneider>'; # Author/team name
+		$this->contact = 'info@initos.com'; # Author/team e-mail address
+		$this->url = 'https://github.com/initOS/MantisBT-Dashboard'; # Support webpage
 	}
 	
 	/**

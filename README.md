@@ -18,13 +18,13 @@ We have this features:
 Version
 -------
 
-0.4.2.
+0.4.3.
 
 Dependencies
 ------------
 
 - MantisCore 1.2.0 
-- jQuery 1.6.4 (project link: [https://github.com/initOS/jquery](https://github.com/initOS/jquery "jQuery Plugin for MantisBT"))
+- jQuery 1.9.1 (project link: [https://github.com/initOS/jquery](https://github.com/initOS/jquery "jQuery Plugin for MantisBT"))
 
 Features
 ----------
@@ -47,8 +47,8 @@ Installation
 ------------
 
 1. Download the files and place the folder `Dashboard` in the directory `plugins/` of your Mantis installation. 
-2. With administrator privileges, go to the page "*Manage*"* / "*Manage Plugins*"
-3. In the list "*Available Plugins*", you should see "*Dashboard 0.4.2*": click the install link for the plugin.
+2. With administrator privileges, go to the page "*Manage*" / "*Manage Plugins*"
+3. In the list "*Available Plugins*", you should see "*Dashboard 0.4.3*": click the install link for the plugin.
 
 Configuration
 --------------
