@@ -50,11 +50,9 @@ var setBoxesSize = function() {
 	var boxes = jQuery('#dashboard-sortable li').filter(function() { 
 						var box = jQuery(this);
 						var display = box.css('display');
-						//console.log('display: '+ display);
 						return (display != 'none');
 			});
 			
-	//console.log("visible boxes: " + boxes.length);
 	var h =  Math.max.apply(null, boxes.map(function() {
 			    return jQuery(this).height();
 			}).get());
@@ -64,7 +62,6 @@ var setBoxesSize = function() {
 	});
 	
 	maxHeight = h;
-	//console.log("call setBoxesSize() with height: " + h);
 };
 
 //re-print bug box
@@ -78,7 +75,6 @@ var setProjectFilter = function(data){
 	
 	var boxElementId ="#dashboard-box-" + boxId;
 	
-	console.log(boxElementId);
 	jQuery(boxElementId).find("tr:gt(0)").remove();
 	jQuery(boxElementId +' tr:first').after(projectsHtml);
 	jQuery('#description-box-' + boxId).html(counterHtml);
@@ -90,8 +86,6 @@ var setBoxVisibility = function(data) {
 	var linkHtml = data['link_show_html'];
 	var boxElementId = '#dashboard-list-item-' + boxId;
 	var listItemElementId = '#visibility-list-item-' + boxId;
-	
-	console.log("visible: " + boxId + " - " + visible);
 	
 	if(visible) {
 		jQuery(boxElementId).fadeIn(function(){
@@ -380,8 +374,7 @@ jQuery(document).ready(function(){
 				var boxName = form.children('input[name=box_name]').val();
 				var seperator = (i == forms.length-1) ? "" : ",";
 				positionString += boxName + ":" + boxId + seperator;
-			}
-			//console.log(positionString);			
+			}			
 						
 			var actionUrl = '<?php echo $t_set_dashboard_boxes_position_path; ?>'
 			var dataValues = { box_positions : positionString };
