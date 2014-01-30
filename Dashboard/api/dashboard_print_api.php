@@ -94,7 +94,6 @@ class DashboardPrintAPI
 			return self::$v_url_link_parameters;
 		}
 		
-		
 		$t_current_user_id = auth_get_current_user_id();
 		$t_bug_resolved_status_threshold = config_get('bug_resolved_status_threshold');
 		$t_hide_status_default = config_get('hide_status_default');
@@ -833,29 +832,37 @@ class DashboardPrintAPI
 		$t_page_count = null;
 		$t_bug_count = null;
 		
+		$t_rows = array();
+		
+		# using filter_cache_row() without raising an error
+		$t_filter = filter_cache_row($t_filter_id, false);		
+		$t_filter = filter_ensure_valid_filter($t_filter);
+		
+		# get filter string
+		$t_filter_setting_arr = explode('#', $t_filter['filter_string'], 2);
+		$t_unserialized_filter = unserialize($t_filter_setting_arr[1]);
+		
+		$t_filter_link = filter_get_url($t_unserialized_filter);
+		
 		$t_html .= '<table id="dashboard-custom-box-' . $t_box_id . '" class="width100" cellspacing="1">';
 		# -- Navigation header row --
 		$t_html .= '<tr>';
 		# -- Viewing range info --
 		$t_html .= '<td class="form-title" colspan="2">';
 		
-		$t_html .= self::get_link_html(html_entity_decode( config_get( 'bug_count_hyperlink_prefix' ) ).'&' . $url_link_parameters[$t_box_title], $t_box_title, false, 'subtle')
+		$t_html .= self::get_link_html($t_filter_link, $t_box_title, false, 'subtle')
 				. '&#160;'
-				. self::get_bracket_link_html(html_entity_decode( config_get( 'bug_count_hyperlink_prefix' ) ).'&' . $url_link_parameters[$t_box_title], '^', true, 'subtle');
+				. self::get_bracket_link_html($t_filter_link, '^', true, 'subtle');
 		
-		# using filter_cache_row() without raising an error
-		$t_filter = filter_cache_row($t_filter_id, false);
-		
-		$t_rows = array();
-		
-		if($t_filter != false){
-			$t_filter = filter_ensure_valid_filter($t_filter);	
-						
+		if($t_filter != false) {	
 			# get filter string
-            $t_filter_setting_arr = explode( '#', $t_filter['filter_string'], 2 );
+			$t_filter_setting_arr = explode('#', $t_filter['filter_string'], 2);
+			$t_unserialized_filter = unserialize($t_filter_setting_arr[1]);
 			
 			# get bug rows with unserialized filter string
-			$t_rows = filter_get_bug_rows($f_page_number, $t_per_page, $t_page_count, $t_bug_count, unserialize($t_filter_setting_arr[1]), helper_get_current_project());
+			$t_rows = filter_get_bug_rows($f_page_number, $t_per_page, $t_page_count, $t_bug_count, 
+					$t_unserialized_filter, helper_get_current_project());
+		
 			$t_array = self::get_custom_filtered_projects_html($t_filter, $t_rows);
 			$t_projects_html = $t_array['projects'];
 			
@@ -868,7 +875,8 @@ class DashboardPrintAPI
 				$v_end = 0;
 			}
 			
-			$t_html .= "<span id='custom-description-box-" . $t_box_id . "'>($v_start - $v_end / $t_bug_count)</span>";
+			$t_html .= "<span id='custom-description-box-" . $t_box_id . 
+				"'>($v_start - $v_end / $t_bug_count)</span>";
 		} else {
 			$t_error_text = plugin_lang_get('error_filter_deleted');
 			$t_projects_html = "<tr><td><span class='error'>$t_error_text</span></td></tr>";
