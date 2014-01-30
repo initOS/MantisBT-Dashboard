@@ -835,14 +835,20 @@ class DashboardPrintAPI
 		$t_rows = array();
 		
 		# using filter_cache_row() without raising an error
-		$t_filter = filter_cache_row($t_filter_id, false);		
-		$t_filter = filter_ensure_valid_filter($t_filter);
-		
-		# get filter string
-		$t_filter_setting_arr = explode('#', $t_filter['filter_string'], 2);
-		$t_unserialized_filter = unserialize($t_filter_setting_arr[1]);
-		
-		$t_filter_link = filter_get_url($t_unserialized_filter);
+		$t_filter = filter_cache_row($t_filter_id, false);
+
+		# only if filter available: get filter link
+		if($t_filter != false) {
+			$t_filter = filter_ensure_valid_filter($t_filter);
+			
+			# get filter string
+			$t_filter_setting_arr = explode('#', $t_filter['filter_string'], 2);
+			$t_unserialized_filter = unserialize($t_filter_setting_arr[1]);
+			
+			$t_filter_link = filter_get_url($t_unserialized_filter);
+		} else {
+			$t_filter_link = "";
+		}
 		
 		$t_html .= '<table id="dashboard-custom-box-' . $t_box_id . '" class="width100" cellspacing="1">';
 		# -- Navigation header row --
@@ -854,11 +860,8 @@ class DashboardPrintAPI
 				. '&#160;'
 				. self::get_bracket_link_html($t_filter_link, '^', true, 'subtle');
 		
-		if($t_filter != false) {	
-			# get filter string
-			$t_filter_setting_arr = explode('#', $t_filter['filter_string'], 2);
-			$t_unserialized_filter = unserialize($t_filter_setting_arr[1]);
-			
+		# only if filter available: show projects
+		if($t_filter != false) {			
 			# get bug rows with unserialized filter string
 			$t_rows = filter_get_bug_rows($f_page_number, $t_per_page, $t_page_count, $t_bug_count, 
 					$t_unserialized_filter, helper_get_current_project());
@@ -884,7 +887,6 @@ class DashboardPrintAPI
 		
 		//print hide icon 
 		$t_html .= self::get_icon_link_html(self::ICON_LINK_DRAG, $t_box_id)
-				#. self::get_icon_link_html(self::ICON_LINK_HIDE, $t_box_id)
 				. self::get_icon_link_html(self::ICON_LINK_EDIT, $t_box_id)
 				. '</td>'
 				. '</tr>';
@@ -904,18 +906,16 @@ class DashboardPrintAPI
 	 */
 	static function get_custom_filtered_projects_html($p_filter, $p_rows)
 	{
-		//print_r($p_filter); echo "<br><br>";
-						
 		$t_rows = $p_rows;
 		$t_filter = $p_filter;
 		
 		$t_update_bug_threshold = config_get('update_bug_threshold');
 		$t_icon_path = config_get( 'icon_path' );
 		
-		#print project table rows
+		# print project table rows
 		$t_html = "";
 		
-		# -- Loop over bug rows and create $v_* variables --
+		# Loop over bug rows and create $v_* variables
 		$t_count = count( $t_rows );
 		for( $i = 0;$i < $t_count; $i++ ) {
 			$t_bug = $t_rows[$i];
@@ -938,7 +938,7 @@ class DashboardPrintAPI
 			$project_name = project_get_field( $t_bug->project_id, 'name' );
 			$t_html .= '<tr bgcolor="' . $status_color. '">';
 	
-			# -- Bug ID and details link + Pencil shortcut --
+			# Bug ID and details link + Pencil shortcut
 			$t_html .= '<td class="center" valign="top" width ="0" nowrap="nowrap">'
 						.'<span class="small">';
 						
@@ -951,7 +951,7 @@ class DashboardPrintAPI
 			}
 		
 			if( ON == config_get( 'show_priority_text' ) ) {
-				#print_formatted_priority_string( $t_bug ); # from print_api.php
+				# print_formatted_priority_string( $t_bug ); # from print_api.php
 				$t_pri_str = get_enum_element( 'priority', $t_bug->priority, auth_get_current_user_id(), $t_bug->project_id );
 				$t_priority_threshold = config_get( 'priority_significant_threshold' );
 
@@ -963,7 +963,7 @@ class DashboardPrintAPI
 					$t_html .= $t_pri_str;
 				}
 			} else {
-				#print_status_icon( $t_bug->priority ); # from icon_api.php
+				# print_status_icon( $t_bug->priority ); # from icon_api.php
 				$t_html .= icon_get_status_icon($t_bug->priority);
 			}
 		
