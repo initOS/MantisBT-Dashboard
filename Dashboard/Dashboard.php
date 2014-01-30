@@ -28,8 +28,7 @@ class DashboardPlugin extends MantisPlugin
 	/*
 	 * implementation of abstract plugin base class function
 	 */
-	public function register()
-	{
+	public function register() {
 		$this->name = "Dashboard";				 				#itle of plugin
 		$this->description = plugin_lang_get('description');	#description text
 		$this->page = 'config_page';							#configure page file
@@ -50,8 +49,7 @@ class DashboardPlugin extends MantisPlugin
 	 * creates table for plugin data (plugin_table_dashboard_boxes)
 	 * @return array (table create SQL String)
 	 */
-	public function schema()
-	{
+	public function schema() {
 		return array(
 			array('CreateTableSQL', array(plugin_table('boxes'), " 
 					id					I 		NOTNULL UNSIGNED AUTOINCREMENT PRIMARY,
@@ -127,8 +125,7 @@ class DashboardPlugin extends MantisPlugin
 	/**
 	 * init - requires the api files
 	 */
-	public function init()
-	{
+	public function init() {
 		#require_once 'api/dashboard_print_api.php';
 		require_once 'api/dashboard_db_api.php';
 	}
@@ -137,9 +134,9 @@ class DashboardPlugin extends MantisPlugin
 	 * loads js and css resources
 	 */
 	public function resources( $p_event ) {
-		
-		$resources = '<script type="text/javascript" src="' . plugin_page('dashboard-js.php') . '"></script> '.
-					 '<link rel="stylesheet" type="text/css" href="' . plugin_file("dashboard.css") . '" />';
+		$resources = '<script type="text/javascript" src="' . plugin_page('php_vars_to_js.php') . '"></script> ' . 
+				'<script type="text/javascript" src="' . plugin_file('dashboard.js') . '"></script>' . 
+				'<link rel="stylesheet" type="text/css" href="' . plugin_file("dashboard.css") . '" />';
 					 
 		return $resources;
 	}

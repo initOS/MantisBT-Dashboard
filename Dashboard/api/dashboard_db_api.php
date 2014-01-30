@@ -186,7 +186,7 @@ class DashboardDbAPI
 		#if not already in db ==> insert
 		if(!self::dashoard_data_exists()){
 			#insert
-			echo " - insert - ";
+			#echo " - insert - ";
 			$t_query = "INSERT INTO $t_dashboard_table 
 						(user_id, box_".$p_box_id."_filter_id) 
 						VALUES (".db_param().','.db_param().")";

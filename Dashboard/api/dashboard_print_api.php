@@ -1419,10 +1419,12 @@ class DashboardPrintAPI
 			$p_id_suffix .= "-";
 		}
 		
+		echo '<div class="dialog-form-field">';
+		
 		if( count( $t_stored_queries_arr ) > 0 ) {
 			$t_filter_text = plugin_lang_get('filter');
+			
 			# filter select
-			echo '<div class="dialog-form-field">';
 			echo "<label class='dashboard-label' for='custom-filter-select'>$t_filter_text</label>";
 			echo "<select id='" . $p_id_suffix . "custom-filter-select' name='" . $p_id_suffix . "custom-filter-select' class='dashboard-input'>";
 			?>
