@@ -31,6 +31,7 @@ var pluginLangGet = {
 	'boxes_view': '<?php echo plugin_lang_get('boxes_view'); ?>',
 	'boxes_view_default': '<?php echo plugin_lang_get('boxes_view_default'); ?>',
 	'boxes_view_custom': '<?php echo plugin_lang_get('boxes_view_custom'); ?>',
+	'filter_already_used': '<?php echo plugin_lang_get('filter_already_used'); ?>',
 	'cancel': '<?php echo plugin_lang_get('cancel'); ?>',
 	'hide_box': '<?php echo plugin_lang_get('hide_box'); ?>',
 	'show_box': '<?php echo plugin_lang_get('show_box'); ?>',

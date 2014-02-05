@@ -22,11 +22,17 @@
 auth_reauthenticate();
 access_ensure_global_level( config_get( 'manage_plugin_threshold' ) );
 
+require_once('filter_api.php');
+require_once( dirname(__DIR__) . DIRECTORY_SEPARATOR . "api" . DIRECTORY_SEPARATOR . "dashboard_print_api.php");
+
 html_page_top1( lang_get( 'plugin_Dashboard_title' ) );
 html_page_top2();
 
 print_manage_menu();
+
 ?>
+
+<script type="text/javascript" src="<?php echo plugin_file('dashboard_config.js') ?>"></script>
 
 <br/>
 <form action="<?php echo plugin_page( 'config_edit' ) ?>" method="post">
@@ -44,12 +50,35 @@ print_manage_menu();
 			echo lang_get( 'plugin_Dashboard_boxes_view' );
 		?>
 	</td>
-	<td class="center" width="40%">
+	<td class="center" width="70%">
 		<label><input type="radio" name="boxes_view" value="default" <?php echo (ON == plugin_config_get('allow_default_boxes_view')) ? 'checked="checked" ' : '' ?>/>
 			<?php echo plugin_lang_get( 'boxes_view_default' ) ?></label>
 		<br>	
 		<label><input type="radio" name="boxes_view" value="custom" <?php echo (ON == plugin_config_get('allow_custom_boxes_view')) ? 'checked="checked" ' : '' ?>/>
 			<?php echo plugin_lang_get( 'boxes_view_custom' ) ?></label>
+	</td>
+</tr>
+<tr <?php echo helper_alternate_class() ?> >
+	<td class="category">
+		<?php
+			echo lang_get( 'plugin_Dashboard_initial_custom_boxes' );
+		?>
+	</td>
+	<td>
+		<fieldset id="available-boxes">
+			<legend><?php echo plugin_lang_get('available_boxes');  ?></legend>
+		</fieldset>
+		<input id='boxes-serialization' type='hidden' name='available_boxes_string' 
+			value='<?php echo plugin_config_get('initial_custom_boxes'); ?>' />
+		<div if="add-initial-box-container">
+		<fieldset>
+			<legend><?php echo plugin_lang_get('new_initial_box');  ?></legend>
+			<div id='add-error' class='error'></div>
+			<?php DashboardPrintAPI::print_box_title_textfield(); ?>
+			<?php DashboardPrintAPI::print_custom_filter_select_box(); ?>
+			<input id="add-initial-box-btn" type="button" value="<?php echo plugin_lang_get('add'); ?>" style="float: right;" />
+		</fieldset>
+		</div>
 	</td>
 </tr>
 <tr>

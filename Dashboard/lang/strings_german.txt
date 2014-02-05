@@ -22,6 +22,11 @@ $s_plugin_Dashboard_config_title = 'Arbeitsplatz Konfiguration';
 $s_plugin_Dashboard_boxes_view = 'Boxen Ansicht';
 $s_plugin_Dashboard_boxes_view_default = 'Standard-Boxen';
 $s_plugin_Dashboard_boxes_view_custom = 'Nutzerspezifische Boxen';
+$s_plugin_Dashboard_initial_custom_boxes = 'Standard nutzerspezifische Boxen';
+$s_plugin_Dashboard_add = 'Hinzufügen';
+$s_plugin_Dashboard_new_initial_box = 'Neue Standard-Box';
+$s_plugin_Dashboard_available_boxes = 'Vorhanden Boxen';
+$s_plugin_Dashboard_filter_already_used = 'Dieser Filter wird bereits verwendet. Wählen Sie einen anderen.';
 
 $s_plugin_Dashboard_cancel = 'Abbrechen';
 

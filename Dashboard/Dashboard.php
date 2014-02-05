@@ -99,6 +99,7 @@ class DashboardPlugin extends MantisPlugin
 		return array (
 			'allow_custom_boxes_view' => ON,
 			'allow_default_boxes_view' => OFF,
+			'initial_custom_boxes' => ""
 		);
 	}
 	

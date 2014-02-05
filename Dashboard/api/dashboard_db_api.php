@@ -133,7 +133,7 @@ class DashboardDbAPI
 	}
 	
 	
-		/**
+	/**
 	 * Gets the filter project of a box of id $t_box_id.
 	 * Box id must be grater than 0! 
 	 * The method therefore returns false if box id parameter equals 0.
@@ -727,5 +727,22 @@ class DashboardDbAPI
 		}
 		
 		return $t_deleted;
+	}
+	
+	/**
+	 * Saves the configured initial custom boxes for the current user
+	 */
+	static function create_intial_custom_boxes()
+	{		
+		$t_initial_custom_boxes_string = plugin_config_get('initial_custom_boxes');
+		$t_boxes = explode(',', $t_initial_custom_boxes_string);
+		
+		foreach ($t_boxes as $t_box) {
+			$t_data = explode(':', $t_box);
+			$t_title = $t_data[0];
+			$t_filter_id = $t_data[2];
+			
+			self::save_custom_box($t_title, $t_filter_id);
+		}
 	}
 }

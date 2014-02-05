@@ -1498,16 +1498,25 @@ class DashboardPrintAPI
 		echo "<form>";
 		
 		# box title textfield
-		echo '<div class="dialog-form-field">';
-		$t_box_title = plugin_lang_get('box_title');
-		echo "<label class='dashboard-label' for='box-title'>$t_box_title</label>";
-		echo "<input id='create-box-title' name='box-title' type='text' title='$t_box_title' class='dashboard-input'>";		
-		echo '</div>'; 
+		self::print_box_title_textfield();
 		
 		# filter select
 		self::print_custom_filter_select_box("create");
 		
 		echo "</form>";
+		echo '</div>';
+	}
+	
+	/**
+	 * Prints the box title form input.
+	 */
+	static function print_box_title_textfield()
+	{
+		# box title textfield
+		echo '<div class="dialog-form-field">';
+		$t_box_title = plugin_lang_get('box_title');
+		echo "<label class='dashboard-label' for='box-title'>$t_box_title</label>";
+		echo "<input id='create-box-title' name='box-title' type='text' title='$t_box_title' class='dashboard-input'>";
 		echo '</div>';
 	}
 	
@@ -1643,7 +1652,7 @@ class DashboardPrintAPI
 	}
 	
 	/**
-	 * Get the html for an info-dialog.
+	 * Gets the html for an info-dialog.
 	 * 
 	 * @param String $p_id
 	 * @param String $p_title
@@ -1654,8 +1663,6 @@ class DashboardPrintAPI
 	{
 		return "<div id='$p_id' title='$p_title'>$p_text</div>";	
 	}
-	
+		
 	//TODO: create sudoku box ;)
 }
-
-

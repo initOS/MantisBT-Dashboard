@@ -22,6 +22,11 @@ $s_plugin_Dashboard_config_title = 'Dashboard configuration';
 $s_plugin_Dashboard_boxes_view = 'Boxes view';
 $s_plugin_Dashboard_boxes_view_default = 'Default boxes';
 $s_plugin_Dashboard_boxes_view_custom = 'Custom boxes';
+$s_plugin_Dashboard_initial_custom_boxes = 'Initial custom boxes';
+$s_plugin_Dashboard_add = 'Add';
+$s_plugin_Dashboard_new_initial_box = 'New initial box';
+$s_plugin_Dashboard_available_boxes = 'Available boxes';
+$s_plugin_Dashboard_filter_already_used = 'This filter is already used. Apply another one.';
 
 $s_plugin_Dashboard_cancel = 'Cancel';
 
