@@ -732,12 +732,13 @@ class DashboardDbAPI
 	/**
 	 * Saves the configured initial custom boxes for the current user
 	 */
-	static function create_intial_custom_boxes()
+	static function create_initial_custom_boxes()
 	{		
 		$t_initial_custom_boxes_string = plugin_config_get('initial_custom_boxes');
 		$t_boxes = explode(',', $t_initial_custom_boxes_string);
 		
 		foreach ($t_boxes as $t_box) {
+			
 			$t_data = explode(':', $t_box);
 			$t_title = $t_data[0];
 			$t_filter_id = $t_data[2];

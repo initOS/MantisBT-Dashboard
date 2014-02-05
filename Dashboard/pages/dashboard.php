@@ -82,7 +82,7 @@
 		DashboardPrintAPI::print_positioned_default_boxes();
 	} else if(ON == plugin_config_get('allow_custom_boxes_view')){
 		if(!DashboardDbAPI::user_has_custom_boxes()) {
-			DashboardDbAPI::create_intial_custom_boxes();	
+			DashboardDbAPI::create_initial_custom_boxes();	
 		}
 		
 		DashboardPrintAPI::print_positioned_custom_boxes();
