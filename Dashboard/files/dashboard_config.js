@@ -69,7 +69,7 @@ jQuery( document ).ready(function() {
 	// Returns the box with given parameters as jQuery object
 	buildBox = function(title, filterName, filterId) {
 		if(!title) {
-			title = pluginLangGet['untitled'];
+			title = filterName;
 		}
 		
 		boxCount = jQuery("#available-boxes > div").size() + 1;
@@ -157,5 +157,6 @@ jQuery( document ).ready(function() {
 		updateSerializationString();
 	}
 	
+	jQuery("#create-box-title").attr("placeholder", pluginLangGet["box_title_placeholder"]);
 	createBoxesFromString(jQuery("#boxes-serialization").val());
 });
