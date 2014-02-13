@@ -33,7 +33,7 @@ class DashboardPlugin extends MantisPlugin
 		$this->description = plugin_lang_get('description');	#description text
 		$this->page = 'config_page';							#configure page file
 
-		$this->version = '0.4.3';     	# Plugin version string
+		$this->version = '0.5.0';     	# Plugin version string
 		$this->requires = array(    	# Plugin dependencies, array of basename => version pairs
             'MantisCore' => '1.2.0',  	# Should always depend on an appropriate version of MantisBT
             'jQuery' => '1.9.1',		# jQuery for AJAX calls (including jQueryUI v1.10.3)
