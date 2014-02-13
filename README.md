@@ -14,11 +14,12 @@ We have this features:
 - per user configurable
 - drag & drop position
 - add, edit, remove and hide boxes
+- configurable initial custom boxes
 
 Version
 -------
 
-0.4.3.
+0.5.0
 
 Dependencies
 ------------
@@ -47,8 +48,8 @@ Installation
 ------------
 
 1. Download the files and place the folder `Dashboard` in the directory `plugins/` of your Mantis installation. 
-2. With administrator privileges, go to the page "*Manage*" / "*Manage Plugins*"
-3. In the list "*Available Plugins*", you should see "*Dashboard 0.4.3*": click the install link for the plugin.
+2. With administrator privileges, go to the page *"Manage"* / *"Manage Plugins"*
+3. In the list *"Available Plugins"*, you should see *"Dashboard 0.4.3"*: click the install link for the plugin.
 
 Configuration
 --------------
@@ -57,7 +58,8 @@ You can choose between using the **Classic Mode** and the **Custom Filter-Used M
 
 1. After installation, the plugin should appear in the "*Installed Plugins*" list: click on the name to manage the configuration.
 2. You see a simple switch between *Default Boxes* and *Custom Boxes*.
-5. After submitting the settings, you can use the Dashboard page with the specified boxes.
+3. For *Custom Boxes* you can add initial boxes. These are displayed, if a user has no boxes created in his Dashboard, yet.
+4. After submitting the settings, you can use the Dashboard page with the specified boxes.
 
 As default configuration the plugin uses the *Custom Filter-Used Mode*.
 
