@@ -845,7 +845,7 @@ class DashboardPrintAPI
 			$t_filter_setting_arr = explode('#', $t_filter['filter_string'], 2);
 			$t_unserialized_filter = unserialize($t_filter_setting_arr[1]);
 			
-			$t_filter_link = filter_get_url($t_unserialized_filter);
+			$t_filter_link = 'view_all_set.php?type=3&source_query_id=' . (int) $t_filter_id;
 		} else {
 			$t_filter_link = "";
 		}
