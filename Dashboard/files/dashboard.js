@@ -178,13 +178,13 @@ function editCustomBox() {
 
 //call back function after  box creation
 function afterCreateCustomBox(data){
-	
 	if(data["saved"] == true) {
-		setColumnPlaceholder();
 		jQuery("#dashboard-sortable-col1").prepend("<li>" + data["html"] + "</li>");
 	} else {
 		jQuery("#error-dialog").html(data["html"]).dialog("open");
 	}
+	
+	setColumnPlaceholder();
 	
 	// clear fields in dialog for next creation:
 	jQuery("#dashboard-new-box-dialog input[name=box-title]").val("");
