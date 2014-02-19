@@ -28,6 +28,7 @@ $s_plugin_Dashboard_new_initial_box = 'Neue Standard-Box';
 $s_plugin_Dashboard_available_boxes = 'Vorhanden Boxen';
 $s_plugin_Dashboard_filter_already_used = 'Dieser Filter wird bereits verwendet. Wählen Sie einen anderen.';
 $s_plugin_Dashboard_box_title_placeholder = 'Standard ist Filtername';
+$s_plugin_Dashboard_column_placeholder = 'Box hier ablegen';
 
 $s_plugin_Dashboard_cancel = 'Abbrechen';
 

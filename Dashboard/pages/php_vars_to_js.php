@@ -33,6 +33,7 @@ var pluginLangGet = {
 	'boxes_view_custom': '<?php echo plugin_lang_get('boxes_view_custom'); ?>',
 	'filter_already_used': '<?php echo plugin_lang_get('filter_already_used'); ?>',
 	'box_title_placeholder': '<?php echo plugin_lang_get('box_title_placeholder'); ?>',
+	'column_placeholder': '<?php echo plugin_lang_get('column_placeholder'); ?>',
 	'cancel': '<?php echo plugin_lang_get('cancel'); ?>',
 	'hide_box': '<?php echo plugin_lang_get('hide_box'); ?>',
 	'show_box': '<?php echo plugin_lang_get('show_box'); ?>',

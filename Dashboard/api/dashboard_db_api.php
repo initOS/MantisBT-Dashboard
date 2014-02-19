@@ -325,7 +325,7 @@ class DashboardDbAPI
 		}
 		
 		$t_position_string = str_replace("&box=", ",", $p_position_string);
-		$t_position_string = str_replace("box=", "", $t_position_string);	
+		$t_position_string = str_replace("box=", "", $t_position_string);
 		
 		$t_current_user_id = auth_get_current_user_id();
 		$t_result = false;
@@ -333,9 +333,10 @@ class DashboardDbAPI
 		$t_custom_boxes_view = (ON == plugin_config_get('allow_custom_boxes_view'));
 		
 		$t_dashboard_table = '';
+		
 		if($t_default_boxes_view){
 			$t_dashboard_table = plugin_table(self::TABLE_BOXES);
-		} else { # = default-table
+		} else {
 			$t_dashboard_table = plugin_table(self::TABLE_CUSTOM_BOXES_POSITIONS);
 		}
 		
@@ -545,11 +546,12 @@ class DashboardDbAPI
 	 */
 	static function get_positioned_custom_boxes_data()
 	{		
+		$t_boxes = array();
+		
 		$t_current_user_id = auth_get_current_user_id();
 		$t_dashboard_table = plugin_table(self::TABLE_CUSTOM_BOXES_POSITIONS);
 		$t_column_positions = 'positions';
 		$t_column_user_id = 'user_id';
-		$t_boxes = array();
 		
 		if(self::user_has_custom_boxes()){
 			$t_query = "SELECT $t_column_positions FROM $t_dashboard_table 
@@ -562,15 +564,7 @@ class DashboardDbAPI
 				$t_position_string = $t_result_array[$t_column_positions];
 				
 				if(!empty($t_position_string)) { # position string set => use it!
-					$t_boxes_position_array = explode(',', $t_position_string);
-					
-					foreach ($t_boxes_position_array as $t_data) {
-						$t_box_data_array = explode(':', $t_data);
-						$t_box_name = $t_box_data_array[0];
-						$t_box_id = $t_box_data_array[1];
-											
-						$t_boxes[$t_box_name] = $t_box_id;
-					}
+					$t_boxes = self::_boxes_data_from_position_string($t_position_string);
 				} else { # string not set => return boxes as written in creation order from custom boxes table
 					$t_dashboard_table = plugin_table(self::TABLE_CUSTOM_BOXES);
 					$t_column_title = 'title';
@@ -585,13 +579,36 @@ class DashboardDbAPI
 						foreach ($t_result as $t_box) {
 							$t_title = $t_box['title'];
 							$t_id = $t_box['id'];
-							$t_boxes[$t_title] = $t_id;
+							array_push($t_boxes, array('id' => $t_id, 'title' => $t_title, 'column' => 1));
 						}		
 					}
 				}
 			}
 		}
-						
+		
+		return $t_boxes;
+	}
+	
+	/**
+	 * Returns a boxes data array 
+	 * with one item is {id => ..., name => ..., column => ...}
+	 * 
+	 * @param String $p_string
+	 */
+	static function _boxes_data_from_position_string($p_string, $p_default_column = 1)
+	{
+		$t_boxes_position_array = explode(',', $p_string);
+		$t_boxes = array();
+		
+		foreach ($t_boxes_position_array as $t_data) {
+			$t_box_data_array = explode(':', $t_data);
+			$t_box_name = $t_box_data_array[0];
+			$t_box_id = $t_box_data_array[1];
+			$t_column = isset($t_box_data_array[2]) ? $t_box_data_array[2] : $p_default_column;
+				
+			array_push($t_boxes, array('id' => $t_box_id, 'title' => $t_box_name, 'column' => $t_column));
+		}
+		
 		return $t_boxes;
 	}
 	

@@ -42,30 +42,60 @@
 
 span.dashboard-show { display: inline; float:left; }
 
-ul{
-	list-style-type: none;
+#sortable-container {
 	margin: 0;
-	padding: 5px;
+	padding: 0;
+	display: block;
+}
+
+ul.connectedSortable {
+	list-style-type: none;
+	float: left;
+	border: 1px solid transparent;
+	min-width: 400px;
+	width: 33.33%;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+#dashboard-sortable-col2 {
+	padding: 0 2px;
+}
+
+#dashboard-sortable-col3 {
+	padding: 0 0 0 2px;
 }
 
 #dashboard-sortable {
-	width: 100%;
-	margin:0;
-	padding:0;
-	display:block;
+	padding: 0 2px 0 0;
 }
 
-#dashboard-sortable li {
-	margin: 4px;
+.connectedSortable li {
+	margin: 0 0 5px 0;
 	padding: 0;
 	float: left;
-	width: 32.3%;
+	width: 100%;
 	list-style: none;
-	display: table;
+	display: inline-block;
+	box-sizing: border-box;
+}
+
+.connectedSortable li table {
+	border: solid 1px #666;
 }
 
 .dashboard-box-placeholder {
 	background-color: #ddd;
+	border: 0;
+}
+
+.column-placeholder {
+	background-color: #ddd;
+}
+
+.column-placeholder span {
+	color: #999;
 }
 
 #dashboard-visibility-list-container {

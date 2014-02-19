@@ -28,6 +28,7 @@ $s_plugin_Dashboard_new_initial_box = 'New initial box';
 $s_plugin_Dashboard_available_boxes = 'Available boxes';
 $s_plugin_Dashboard_filter_already_used = 'This filter is already used. Apply another one.';
 $s_plugin_Dashboard_box_title_placeholder = 'Default is filter name';
+$s_plugin_Dashboard_column_placeholder = 'Drop box here';
 
 $s_plugin_Dashboard_cancel = 'Cancel';
 

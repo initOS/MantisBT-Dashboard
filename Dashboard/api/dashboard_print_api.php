@@ -786,32 +786,40 @@ class DashboardPrintAPI
 	 */
 	static function print_positioned_custom_boxes()
 	{
-		echo self::get_positioned_custom_boxes_html();
+		$t_boxes_columns = DashboardPrintAPI::_get_positioned_custom_boxes_columns_html();
+		
+		foreach ($t_boxes_columns as $t_column_num => $t_boxes_column) {
+			echo "<ul id='dashboard-sortable-col$t_column_num' class='connectedSortable' data-column='$t_column_num'>";
+			echo $t_boxes_column;
+			echo "</ul>";
+		}
 	}
 	
 	/**
-	 * Gets the html for all custom boxes attached to the current user. 
+	 * Gets the html for all custom boxes attached to the current user as an array of 3 columns.
+	 * @return Array
 	 */
-	static function get_positioned_custom_boxes_html()
+	static private function _get_positioned_custom_boxes_columns_html()
 	{
-		$t_html = "";
-		$t_boxes = DashboardDbAPI::get_positioned_custom_boxes_data();
+		$t_columns = array(1 => "", 2 => "", 3 => "");
+		$t_boxes_data = DashboardDbAPI::get_positioned_custom_boxes_data();
 		
-		foreach ($t_boxes as $t_key => $t_value) {
-			$t_hidden_string = "";
-			$t_box = DashboardDbAPI::get_custom_box_data($t_value);
+		foreach ($t_boxes_data as $t_values) {
+			$t_box = DashboardDbAPI::get_custom_box_data($t_values['id']);
+			$t_hidden_string = ((int) $t_box['visible'] === 0) ? "style='display: none;'": "";
 			
-			if(((int) $t_box['visible']) === 0) {
-				$t_hidden_string = "style='display: none;'";
-			}
-
-			$t_html .= "<li id='dashboard-list-item-". $t_box['id'] ."' " . $t_hidden_string . ">"
-					. self::get_custom_box_html($t_box)
-					. '</li>';
-		}
+			$t_box_html = "<li id='dashboard-list-item-". $t_box['id'] ."' " . $t_hidden_string . ">"
+				. self::get_custom_box_html($t_box)
+				. '</li>';
+			
+			$t_column_num = $t_values['column'];
+			$t_old_html = $t_columns[$t_column_num];
+			$t_columns[$t_column_num] = $t_old_html . $t_box_html;
+		}		
 		
-		return $t_html;
+		return $t_columns;
 	}
+	
 	
 	/**
 	 * Creates and returns the complete html string for a custom box data set.
@@ -1345,8 +1353,8 @@ class DashboardPrintAPI
 			}
 		} else if(plugin_config_get('allow_custom_boxes_view') == ON){
 			$t_boxes = DashboardDbAPI::get_positioned_custom_boxes_data();
-			foreach ($t_boxes as $t_key => $t_value) {
-				$t_box_id = $t_value;						
+			foreach ($t_boxes as $t_value) {
+				$t_box_id = $t_value['id'];						
 				
 				if($t_box_id != 0 && !DashboardDbAPI::get_custom_box_visibility($t_box_id)) {
 					echo self::get_visibility_list_item_html($t_box_id);

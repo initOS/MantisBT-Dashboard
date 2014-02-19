@@ -76,7 +76,7 @@
 		echo '<br />';
 	}
 ?>
-<ul id="dashboard-sortable" class="cf" border="0" cellspacing="3" cellpadding="0">
+<div id="sortable-container" class="cf">
 <?php
 	if(ON == plugin_config_get('allow_default_boxes_view')) {
 		DashboardPrintAPI::print_positioned_default_boxes();
@@ -88,7 +88,8 @@
 		DashboardPrintAPI::print_positioned_custom_boxes();
 	}
 ?>
-</ul>
+</div>
+
 <?php
 	# print show box links
 	DashboardPrintAPI::print_visibility_link_list();
