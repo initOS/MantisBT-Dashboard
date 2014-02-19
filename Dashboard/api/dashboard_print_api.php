@@ -838,13 +838,7 @@ class DashboardPrintAPI
 		$t_filter = filter_cache_row($t_filter_id, false);
 
 		# only if filter available: get filter link
-		if($t_filter != false) {
-			$t_filter = filter_ensure_valid_filter($t_filter);
-			
-			# get filter string
-			$t_filter_setting_arr = explode('#', $t_filter['filter_string'], 2);
-			$t_unserialized_filter = unserialize($t_filter_setting_arr[1]);
-			
+		if($t_filter != false) {			
 			$t_filter_link = 'view_all_set.php?type=3&source_query_id=' . (int) $t_filter_id;
 		} else {
 			$t_filter_link = "";
@@ -862,6 +856,12 @@ class DashboardPrintAPI
 		
 		# only if filter available: show projects
 		if($t_filter != false) {			
+			$t_filter = filter_ensure_valid_filter($t_filter);
+				
+			# get filter string
+			$t_filter_setting_arr = explode('#', $t_filter['filter_string'], 2);
+			$t_unserialized_filter = unserialize($t_filter_setting_arr[1]);
+			
 			# get bug rows with unserialized filter string
 			$t_rows = filter_get_bug_rows($f_page_number, $t_per_page, $t_page_count, $t_bug_count, 
 					$t_unserialized_filter, helper_get_current_project());
