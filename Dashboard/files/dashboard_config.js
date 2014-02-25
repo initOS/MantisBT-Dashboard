@@ -18,7 +18,7 @@
 #  @author Paul Götze <paul.goetze@initos.com>
 */
 
-jQuery( document ).ready(function() {
+jQuery(document).ready(function() {
 		
 	// Adds box to available boxes fieldset
 	addInitialBox = function (title, filterName, filterId) {
