@@ -15,16 +15,13 @@
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * MantisBT Dashoard Plugin - Customize each bug boxes filter project, visibility & position.
+ * 
  * @author InitOS GmbH & Co.KG
  * @author Paul Götze <paul.goetze@initos.com>
  */
-
-/**
- * MantisBT Dashoard Plugin - Customize each bug boxes filter project, visibility & position.
- * @author InitOS/Paul Götze <paul.goetze@initos.com>
- */
 class DashboardPlugin extends MantisPlugin
-{
+{	
 	/*
 	 * implementation of abstract plugin base class function
 	 */
@@ -43,8 +40,11 @@ class DashboardPlugin extends MantisPlugin
 		$this->author = 'InitOS GmbH & Co. KG <Paul Götze,Markus Schneider>'; # Author/team name
 		$this->contact = 'info@initos.com'; # Author/team e-mail address
 		$this->url = 'https://github.com/initOS/MantisBT-Dashboard'; # Support webpage
+		
+		# set home page from default my_view_page.php to Dashboard
+		config_set_global('default_home_page', 'plugin.php?page=Dashboard/dashboard');
 	}
-	
+
 	/**
 	 * creates table for plugin data (plugin_table_dashboard_boxes)
 	 * @return array (table create SQL String)
@@ -102,7 +102,7 @@ class DashboardPlugin extends MantisPlugin
 			'initial_custom_boxes' => ""
 		);
 	}
-	
+
 	/**
 	 * hooks events
 	 */
@@ -111,18 +111,18 @@ class DashboardPlugin extends MantisPlugin
             'EVENT_MENU_MAIN_FRONT' => 'add_to_main_menu',
             'EVENT_LAYOUT_RESOURCES' => 'resources'
         );
-    }
-	
+	}
+    
 	/**
 	 * adds dashboard link to the main menu
 	 * @param $p_event
 	 */
-	function add_to_main_menu( $p_event ) {
+	function add_to_main_menu($p_event) {
         return array (
-        	'<a href="' . plugin_page( 'dashboard' ) . '">' . plugin_lang_get( 'menuname' ) .'</a>'
+        	'<a href="' . plugin_page('dashboard') . '">' . plugin_lang_get('menuname') .'</a>'
         );
     }
-	
+
 	/**
 	 * init - requires the api files
 	 */
@@ -134,7 +134,7 @@ class DashboardPlugin extends MantisPlugin
 	/**
 	 * loads js and css resources
 	 */
-	public function resources( $p_event ) {
+	public function resources($p_event) {
 		$resources = '<script type="text/javascript" src="' . plugin_page('php_vars_to_js.php') . '"></script> ' . 
 				'<script type="text/javascript" src="' . plugin_file('dashboard.js') . '"></script>' . 
 				'<link rel="stylesheet" type="text/css" href="' . plugin_file("dashboard.css") . '" />';
