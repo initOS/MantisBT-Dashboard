@@ -25,12 +25,40 @@ var fileURI = baseURI.replace(regex, '')
 var custom_box_script = fileURI + 'custom_box.php';
 var default_box_script = fileURI + 'default_box.php';
 
+var mainPageLink = 'main_page.php';
+var myViewPageLink = 'my_view_page.php';
+
 var mainDialogWidth = 600;
 var mainDialogHeight = 300;
 var confirmDialogWidth = 300;
 var confirmDialogHeigth = 200;
 
-//box size computation
+// Force redirects from my_view_page and main_page to Dashboard
+window.onload = function(){ 
+	url = '/plugin.php?page=Dashboard/dashboard';
+	pathname = jQuery(location).attr('pathname');
+	
+	if (pathname.search(mainPageLink) > -1 || pathname.search(myViewPageLink) > -1) {
+		window.location.replace(url);
+	}
+};
+
+// Remove menu items 'My View' and 'Main Page' 
+function removeMenuItems() {
+	menu = jQuery('.menu').first();
+	menuLinks = menu.find('a');
+	
+	filteredLinks = jQuery.grep(menuLinks, function( e, i ) {
+		href = jQuery(e).attr('href');
+		return href != '/' + mainPageLink && href != '/' + myViewPageLink;
+	});
+	
+	menu.empty();
+	menu.append(filteredLinks);
+	menu.find('a:not(:first)').before(' | ');
+};
+
+// sets or removes a placeholder if column is (not aynmore) empty
 function setColumnPlaceholder() {	
 	jQuery("#dashboard-sortable-col1, #dashboard-sortable-col2, #dashboard-sortable-col3").each(
 		function(index, element){
@@ -52,12 +80,6 @@ function setColumnPlaceholder() {
 				container.find('.column-placeholder').remove();
 			}
 	});
-	
-	/**
-	boxes.each(function(index, element) {
-		jQuery(element).css({'height':(heights[index] + 'px')});
-		});
-	**/
 };
 
 //re-print bug box
@@ -295,9 +317,8 @@ function handleAJAXCall(actionUrl, dataValues, successFunction, errorHandlingFun
 };
 
 jQuery(document).ready(function() {
-	
-	//hide top menu select box:
-	//jQuery('form[name=form_set_project]').hide();
+
+	removeMenuItems();
 	
 	setColumnPlaceholder();
 	
