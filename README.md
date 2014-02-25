@@ -19,12 +19,12 @@ We have this features:
 Version
 -------
 
-0.5.0
+0.5.1
 
 Dependencies
 ------------
 
-- MantisCore 1.2.0 
+- MantisCore >=1.2.0 
 - jQuery 1.9.1 (project link: [https://github.com/initOS/jquery](https://github.com/initOS/jquery "jQuery Plugin for MantisBT"))
 
 Features
@@ -49,7 +49,9 @@ Installation
 
 1. Download the files and place the folder `Dashboard` in the directory `plugins/` of your Mantis installation. 
 2. With administrator privileges, go to the page *"Manage"* / *"Manage Plugins"*
-3. In the list *"Available Plugins"*, you should see *"Dashboard 0.4.3"*: click the install link for the plugin.
+3. In the list *"Available Plugins"*, you should see *"Dashboard 0.5.1"*: click the install link for the plugin.
+
+The Dashboard is now available under the *"Dashboard"* menu entry and is set as the default home page. *"Main"* and *"My View"* menu items are removed by the Dashboard plugin.
 
 Configuration
 --------------
