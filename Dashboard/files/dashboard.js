@@ -69,15 +69,15 @@ function setColumnPlaceholder() {
 			}).length;
 			
 			if (count == 0) {
-				if (container.find('.column-placeholder').length == 0) {
-					placeholder = "<div class='column-placeholder'><span>"
+				if (container.find('.dashboard-column-placeholder').length == 0) {
+					placeholder = "<div class='dashboard-column-placeholder'><span>"
 						+ pluginLangGet['column_placeholder'] 
 						+ "</span></div>";
 					
 					container.append(placeholder);
 				}
 			} else {
-				container.find('.column-placeholder').remove();
+				container.find('.dashboard-column-placeholder').remove();
 			}
 	});
 };

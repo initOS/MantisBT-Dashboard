@@ -1361,7 +1361,7 @@ class DashboardPrintAPI
 	 */
 	static function print_visibility_link_list()
 	{
-		echo "<div id='dashboard-visibility-list'>";
+		echo "<div id='dashboard-visibility-list' class='cf'>";
 		echo "<div id='dashboard-visibility-list-container'><div class='visibility-list-item-raw'><b>" . plugin_lang_get('display_box') . "</b></div>";
 		
 		$t_count_visibles = 0;
@@ -1398,10 +1398,9 @@ class DashboardPrintAPI
 		
 		echo "</div>";
 		if(plugin_config_get('allow_custom_boxes_view') == ON){
-			self::print_create_new_box_dialog();
-			self::print_create_new_box_button();
-			
+			self::print_create_new_box_dialog();			
 			self::print_create_edit_box_dialog();
+			self::print_create_new_box_button();
 		}
 		echo "</div>";
 	}	
@@ -1519,8 +1518,10 @@ class DashboardPrintAPI
 	 */
 	static function get_create_new_box_button_html()
 	{
+		$t_html = '<div id="dashboard-create-box-button-container">';
 		$t_text = plugin_lang_get('create_new_box');
-		$t_html = "<button id='create-box' title='" . $t_text . "'>" . $t_text . "</button>";
+		$t_html .= "<button id='create-box' title='" . $t_text . "'>" . $t_text . "</button>";
+		$t_html .= '</div>';
 		
 		return $t_html;
 	}	

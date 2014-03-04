@@ -20,7 +20,7 @@
 .dashboard-hide, .dashboard-drag, .dashboard-edit, .dashboard-delete { float:right; }
 
 .show-icon, .hide-icon, .drag-icon, .edit-icon, .delete-icon, .add-icon { width: 16px; height: 16px; display:inline-block; }
-.show-icon { position: relative;	top:3px; }
+.show-icon { position: relative;	top:0px; }
 
 .show-icon { background-image:url(plugin_file.php?file=Dashboard/show.png); background-position:0px 0px; }
 .hide-icon { background-image:url(plugin_file.php?file=Dashboard/hide.png); background-position:0px 0px; }
@@ -50,13 +50,16 @@ span.dashboard-show { display: inline; float:left; }
 
 ul.connectedSortable {
 	list-style-type: none;
-	float: left;
-	border: 1px solid transparent;
 	min-width: 400px;
 	width: 33.33%;
 	box-sizing: border-box;
 	margin: 0;
-	padding: 0;
+	display: inline-block;
+	vertical-align: top;
+}
+
+#dashboard-sortable-col1 {
+	padding: 0 2px 0 0;	
 }
 
 #dashboard-sortable-col2 {
@@ -67,17 +70,13 @@ ul.connectedSortable {
 	padding: 0 0 0 2px;
 }
 
-#dashboard-sortable {
-	padding: 0 2px 0 0;
-}
-
 .connectedSortable li {
 	margin: 0 0 5px 0;
 	padding: 0;
-	float: left;
+	/*float: left;*/
 	width: 100%;
 	list-style: none;
-	display: inline-block;
+	display: block;
 	box-sizing: border-box;
 }
 
@@ -85,21 +84,36 @@ ul.connectedSortable {
 	border: solid 1px #666;
 }
 
-.dashboard-box-placeholder {
+li.dashboard-box-placeholder {
 	background-color: #ddd;
 	border: 0;
 }
 
-.column-placeholder {
+.dashboard-column-placeholder {
+	color: #666;
 	background-color: #ddd;
+	min-height: 27px;
+	box-sizing: border-box;
+	padding: 5px 0 0 0;
 }
 
 .column-placeholder span {
 	color: #999;
 }
 
+#dashboard-create-box-button-container {
+	padding: 0;
+	margin: 5px 10px 0 0;
+	float: right;
+}
+
+#create-box {
+	cursor: pointer;
+}
+
 #dashboard-visibility-list-container {
-	padding: 5px;
+	padding: 0px;
+	float: left;
 }
 
 #dashboard-visibility-list {
@@ -108,6 +122,8 @@ ul.connectedSortable {
 	width: auto;
 	display: block;
 	padding: 0;
+	border: 1px solid transparent;
+	background-color: #ddd;
 	border: 1px solid #666;
 	margin: 5px 0 0 0;
 }
@@ -125,8 +141,8 @@ ul.connectedSortable {
 	display: inline-block;
 	cursor: pointer;
 	border-right: 1px solid #666;
-	padding: 0 10px 5px 10px;
-	margin: 0;
+	padding: 4px 10px 4px 10px;
+	margin: 0 0 0 0;
 	position: relative;
 	top: -5px;
 }

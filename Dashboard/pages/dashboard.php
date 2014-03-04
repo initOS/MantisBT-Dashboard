@@ -69,6 +69,9 @@
 
 <div id="dashboard-container" align="center">
 <?php
+	# print show box links
+	DashboardPrintAPI::print_visibility_link_list();
+	
 	$t_status_legend_position = config_get( 'status_legend_position' );
 
 	if ( $t_status_legend_position == STATUS_LEGEND_POSITION_TOP || $t_status_legend_position == STATUS_LEGEND_POSITION_BOTH ) {
@@ -90,14 +93,11 @@
 ?>
 </div>
 
-<?php
-	# print show box links
-	DashboardPrintAPI::print_visibility_link_list();
-	
+<?php	
 	# print info dialog
 	echo DashboardPrintAPI::get_info_dialog_html();
 	echo DashboardPrintAPI::get_info_dialog_html("", "error-dialog", plugin_lang_get('error'));
-
+	
 	if ( $t_status_legend_position == STATUS_LEGEND_POSITION_BOTTOM || $t_status_legend_position == STATUS_LEGEND_POSITION_BOTH ) {
 		html_status_legend();
 	}
