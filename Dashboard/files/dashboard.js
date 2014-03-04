@@ -104,19 +104,24 @@ function setBoxVisibility(data) {
 	var linkHtml = data['link_show_html'];
 	var boxElementId = '#dashboard-list-item-' + boxId;
 	var listItemElementId = '#visibility-list-item-' + boxId;
-	
+
 	if(visible) {
 		jQuery(boxElementId).fadeIn();
 		jQuery(listItemElementId).remove();
 		
 		if(jQuery('.visibility-list-item').size() == 0 ) {
 			jQuery('#dashboard-visibility-list-container').append(emptyVisibilityListText);
-		}	
+		}
 	} else {
-		jQuery(boxElementId).fadeOut();
+		jQuery(boxElementId).fadeOut(function(){
+			setColumnPlaceholder();
+		});
+		
 		jQuery('.visibility-list-item-filler').remove();
 		jQuery('#dashboard-visibility-list-container').append(linkHtml);
 	}
+
+	setColumnPlaceholder();
 };
 
 function saveBoxVisibility(form) {
@@ -257,7 +262,6 @@ function saveCustomBoxPositions() {
 // call back function after saving boxes position
 function afterSaveCustomBoxPositions(data) {
 	setColumnPlaceholder();
-	console.log("placeholder");
 }
 
 function deleteCustomBox(data) {		

@@ -483,7 +483,7 @@ class DashboardPrintAPI
 	 * @param $p_box_id
 	 */
 	static function print_filter_select_box($p_box_title)
-	{
+	{		
 		# project selector hidden if only one project visible to user
 		$t_show_project_selector = true;
 		$t_project_ids = current_user_get_accessible_projects();
@@ -512,8 +512,9 @@ class DashboardPrintAPI
 			# CSRF protection not required here - form does not result in modifications
 	
 			echo lang_get('email_project'), ': ';
-			if( ON == config_get('show_extended_project_browser')){
-				print_extended_project_browser( helper_get_current_project_trace() );
+			
+			if(ON == config_get('show_extended_project_browser')){
+				print_extended_project_browser_html(helper_get_current_project_trace());
 			} else {
 				
 				echo '<select name="project_id" class="small">';		
@@ -522,17 +523,18 @@ class DashboardPrintAPI
 				echo '</select> ';
 			}
 			
-			#hidden input for posting current box id to set filter for a certain box 
+			# hidden input for posting current box id to set filter for a certain box 
 			echo '<input type="hidden" name="box_id" value="'. $t_box_id .'">';
 			
 			if($t_javascript_off){	
 				#submit -- [not nescessary with JavaScript usage]
 				echo '<input type="submit" class="button-small button-dashboard" value="' . lang_get('switch') . '" />';
 			}
+			
 			echo '</form>';
 		} else {
 			# User has only one project, set it as both current and default
-			if( ALL_PROJECTS == helper_get_current_project()) {
+			if(ALL_PROJECTS == helper_get_current_project()) {
 				helper_set_current_project($t_project_id);
 				current_user_set_default_project($t_project_id);
 				# Force reload of current page
@@ -542,37 +544,37 @@ class DashboardPrintAPI
 		}
 	}
 
-/**
+	/**
 	 * Return the current project id as stored in the data base, in an Array
 	 * If the current project is a subproject, the return value will include
 	 * any parent projects
 	 * @return array
 	 */
-	static function get_current_project_trace($p_box_id) {
+	static function get_current_project_trace($p_box_id) 
+	{
 		$t_bottom = DashboardDbAPI::get_box_filter_project($p_box_id);
-		
+
 		$t_parent = $t_bottom;
 		$t_project_id = Array(
 			$t_bottom,
 		);
-		
+
 		echo $t_bottom;
-	
-		while( true ) {
-			$t_parent = project_hierarchy_get_parent( $t_parent );
-			if( 0 == $t_parent ) {
+
+		while(true) {
+			$t_parent = project_hierarchy_get_parent($t_parent);
+
+			if(0 == $t_parent) {
 				break;
 			}
+
 			array_unshift($t_project_id, $t_parent);
 		}
-	
-		if( !project_exists( $t_bottom ) || ( 0 == project_get_field( $t_bottom, 'enabled' ) ) || !access_has_project_level( VIEWER, $t_bottom ) ) {
-			$t_project_id = Array(
-				ALL_PROJECTS,
-			);
+
+		if(!project_exists($t_bottom) || (0 == project_get_field($t_bottom, 'enabled')) || !access_has_project_level(VIEWER, $t_bottom)) {
+			$t_project_id = array(ALL_PROJECTS,);
 		}
-	
-		#echo "project_id: ", $t_project_id;
+
 		return $t_project_id;
 	}
 
@@ -676,29 +678,52 @@ class DashboardPrintAPI
 	 */
 	static function print_positioned_default_boxes()
 	{
-		$t_boxes = DashboardDbAPI::get_positioned_default_boxes_data();
+		$t_boxes_columns = DashboardPrintAPI::_get_positioned_default_boxes_columns_data();
 		
-		# print boxes
-		while (list ($t_box_title, $t_box_id) = each ($t_boxes)) {
-			$t_hidden_string = "";
-			if($t_box_id != 0) {
-				if(!DashboardDbAPI::get_box_visibility($t_box_id)) {
-					$t_hidden_string = "style='display: none;'";
-				}
-				
-				echo "<li id='dashboard-list-item-". $t_box_id ."' " . $t_hidden_string . " class='cf'>";
-				self::print_box($t_box_title);
-				echo "</li>";
+		foreach ($t_boxes_columns as $t_column_num => $t_boxes_data) {
+			echo "<ul id='dashboard-sortable-col$t_column_num' class='connectedSortable' data-column='$t_column_num'>";
+
+			foreach ($t_boxes_data as $t_values) {
+				$t_visible = DashboardDbAPI::get_box_visibility($t_values['id']);
+				$t_hidden_string = ((int) $t_visible === 0) ? "style='display: none;'": "";
+					
+				echo "<li id='dashboard-list-item-". $t_values['id'] ."' " . $t_hidden_string . ">";
+				self::print_box($t_values['title']);
+				echo '</li>';
 			}
+
+			echo "</ul>";
 		}
+	}
+	
+	/**
+	 * Gets the html for all default boxes attached to the current user as an array of 3 columns.
+	 * @return Array
+	 */
+	static private function _get_positioned_default_boxes_columns_data()
+	{
+		$t_columns = array(1 => array(), 2 => array(), 3 => array());
+		$t_boxes_data = DashboardDbAPI::get_positioned_default_boxes_data();
+		
+		foreach ($t_boxes_data as $t_values) {
+			$t_column_num = (int) $t_values['column'];
+			$t_id = $t_values['id'];
+			$t_title = $t_values['title'];
+			$t_data_array = array('id' => $t_id, 'title' => $t_title);
+			
+			array_push($t_columns[$t_column_num], $t_data_array);
+		}
+		
+		return $t_columns;
 	}
 	
 	/**
 	 * Prints the full dashboard box filtered by current project id.
 	 * 
-	 * @param $p_box_title Name of ox to print
+	 * @param $p_box_title String Name of box to print
+	 * @param $p_hidden Boolean = false
 	 */
-	static function print_box($p_box_title, $p_hidden = False)
+	static function print_box($p_box_title, $p_hidden = false)
 	{		
 		$t_box_id = $GLOBALS['g_my_view_boxes'][$p_box_title];
 		$t_filter_project_id = DashboardDbAPI::get_box_filter_project($t_box_id, true);
@@ -718,13 +743,13 @@ class DashboardPrintAPI
 		$t_box_filter = self::get_box_filter($p_box_title);
 		$t_box_title = lang_get( 'my_view_title_' . $p_box_title );
 		
-		#get rows
-		
+		# get rows
 		$rows = filter_get_bug_rows( $f_page_number, $t_per_page, $t_page_count, $t_bug_count, $t_box_filter, $t_filter_project_id, $t_current_user_id);
 		
 		# Improve performance by caching category data in one pass
 		if( helper_get_current_project() == 0 ) {
 			$t_categories = array();
+			
 			foreach( $rows as $t_row ) {
 				$t_categories[] = $t_row->category_id;
 			}
@@ -1343,7 +1368,9 @@ class DashboardPrintAPI
 		
 		if(plugin_config_get('allow_default_boxes_view') == ON){
 			$t_boxes = DashboardDbAPI::get_positioned_default_boxes_data();
-			while (list ($t_box_title, $t_box_id) = each ($t_boxes)) {			
+					
+			foreach ($t_boxes as $t_value) {
+				$t_box_id = $t_value['id'];
 				
 				if($t_box_id != 0 && !DashboardDbAPI::get_box_visibility($t_box_id)) {
 					echo self::get_visibility_list_item_html($t_box_id);
@@ -1353,6 +1380,7 @@ class DashboardPrintAPI
 			}
 		} else if(plugin_config_get('allow_custom_boxes_view') == ON){
 			$t_boxes = DashboardDbAPI::get_positioned_custom_boxes_data();
+			
 			foreach ($t_boxes as $t_value) {
 				$t_box_id = $t_value['id'];						
 				
