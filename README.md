@@ -5,21 +5,21 @@ MantisBT-Dashboard
 
 Individually per user customizable dashboard for MantisBT bug boxes and custom views.
 
-This plugin gives you a nice overview over everything what goes on in Mantis. It is a must-have.
+This plugin provides a nice overview of everything that goes on in Mantis. It is a must-have.
 
-We have this features:
+It has these features:
 
 - complete jQuery Interface
 - Classic Mode or Filter-Used Mode
 - per user configurable
-- drag & drop position
+- drag & drop positioning
 - add, edit, remove and hide boxes
 - configurable initial custom boxes
 
 Version
 -------
 
-0.5.1
+0.5.2
 
 Dependencies
 ------------
@@ -49,7 +49,7 @@ Installation
 
 1. Download the files and place the folder `Dashboard` in the directory `plugins/` of your Mantis installation. 
 2. With administrator privileges, go to the page *"Manage"* / *"Manage Plugins"*
-3. In the list *"Available Plugins"*, you should see *"Dashboard 0.5.1"*: click the install link for the plugin.
+3. In the list *"Available Plugins"*, you should see *"Dashboard 0.5.2"*: click the install link for the plugin.
 
 The Dashboard is now available under the *"Dashboard"* menu entry and is set as the default home page. *"Main"* and *"My View"* menu items are removed by the Dashboard plugin.
 
@@ -83,5 +83,5 @@ References
 
 *Icons by gentleface: http://gentleface.com/free_icon_set.html*
 
-*This plugin idea comes from: https://github.com/rolfkleef/mantisbt-dashboard,  thanks for that, we hope you enjoy!*
+*This plugin idea comes from: https://github.com/rolfkleef/mantisbt-dashboard, thanks for that, we hope you enjoy!*
 
