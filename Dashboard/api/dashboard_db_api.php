@@ -733,6 +733,8 @@ class DashboardDbAPI
 	 * Deletes the box with given id if available for current user.
 	 * 
 	 * @param $p_box_id
+	 * 
+	 * @return boolean deleted
 	 */
 	static function delete_custom_box($p_box_id)
 	{
@@ -754,6 +756,35 @@ class DashboardDbAPI
 			$t_deleted = (db_num_rows($t_query_result) > 0 || $t_query_result != false);
 		}
 		
+		if (!self::user_has_custom_boxes()) {
+			self::delete_custom_boxes_positions();
+		}
+		
+		return $t_deleted;
+	}
+	
+	/**
+	 * Deletes the custom boxes positions record for the current user.
+	 * Should be called when all boxes are deleted to ensure the right position 
+	 * of initial custom boxes.
+	 * 
+	 * @return boolean deleted
+	 */
+	static function delete_custom_boxes_positions()
+	{
+		$t_deleted = false;
+
+		$t_current_user_id = auth_get_current_user_id();
+		$t_dashboard_table = plugin_table(self::TABLE_CUSTOM_BOXES_POSITIONS);
+
+		$t_column_user_id = 'user_id';
+
+		$t_query = "DELETE FROM $t_dashboard_table 
+					WHERE $t_column_user_id = " . db_param();
+
+		$t_query_result = db_query_bound($t_query, array($t_current_user_id));
+		$t_deleted = (db_num_rows($t_query_result) > 0 || $t_query_result != false);
+
 		return $t_deleted;
 	}
 	
