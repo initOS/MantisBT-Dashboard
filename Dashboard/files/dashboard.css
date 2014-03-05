@@ -50,7 +50,7 @@ span.dashboard-show { display: inline; float:left; }
 
 ul.connectedSortable {
 	list-style-type: none;
-	min-width: 400px;
+	min-width: 300px;
 	width: 33.33%;
 	box-sizing: border-box;
 	margin: 0;
