@@ -59,3 +59,4 @@ var pluginLangGet = {
 };
 
 var emptyVisibilityListText = "<?php echo DashboardPrintAPI::get_visibility_list_item_html(null); ?>";
+var customBoxesEnabled = <?php echo ((ON == plugin_config_get('allow_custom_boxes_view')) ? 1 : 0); ?>;

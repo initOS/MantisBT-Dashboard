@@ -98,7 +98,20 @@ function setProjectFilter(data) {
 	jQuery('#description-box-' + boxId).html(counterHtml);
 };
 
-function setBoxVisibility(data) {	
+function saveBoxVisibility(form) {
+	var actionUrl = (customBoxesEnabled ? custom_box_script : default_box_script);
+	var boxId = form.children('input[name=box_id]').val();
+	var visible = form.children('input[name=visible]').val();
+	var dataValues = {
+			box_id : boxId,
+			visible:  visible,
+			action: 'visibility'
+			};
+	
+	handleAJAXCall(actionUrl, dataValues, setBoxVisibility, handleBoxVisibilityError);
+}
+
+function setBoxVisibility(data) {
 	var boxId = data['box_id'];
 	var visible = data['visible'];
 	var linkHtml = data['link_show_html'];
@@ -124,19 +137,6 @@ function setBoxVisibility(data) {
 	setColumnPlaceholder();
 };
 
-function saveBoxVisibility(form) {
-	var actionUrl = default_box_script;
-	var boxId = form.children('input[name=box_id]').val();
-	var visible = form.children('input[name=visible]').val();
-	var dataValues = {
-			box_id : boxId,
-			visible:  visible,
-			action: 'visibility'
-			};
-	
-	handleAJAXCall(actionUrl, dataValues, setBoxVisibility, handleBoxVisibilityError);
-}
-
 function createCustomBox() {
 	var boxTitle = jQuery("#create-box-title").val();
 	var boxFilterId = jQuery("#dashboard-new-box-dialog select[name=create-custom-filter-select]").val();
@@ -149,40 +149,6 @@ function createCustomBox() {
 			};
 		
 	handleAJAXCall(actionUrl, dataValues, afterCreateCustomBox, handleCreateCustomBoxError);
-};
-
-function saveCustomBoxVisibility(form) {
-	var boxId = form.children("input[name=box_id]").val();
-	var visible = form.children("input[name=visible]").val(); 
-	var actionUrl = custom_box_script;
-	
-	var dataValues = {
-			box_id: boxId,
-			visible: visible,
-			action: 'visibility'
-			};
-					   
-	handleAJAXCall(actionUrl, dataValues, afterSetCustomBoxVisibility, handleBoxVisibilityError);
-};
-
-function afterSetCustomBoxVisibility(data) {
-	if(data["saved"]){
-		var boxId = data["box_id"];
-		var visible = data["visible"];
-		
-		if(visible){
-			jQuery("#dashboard-custom-box-" + boxId).parent("li").fadeIn();
-			jQuery("#visibility-list-item-" + boxId).remove();
-			
-			if(jQuery('.visibility-list-item').size() == 0 ){
-				jQuery('#dashboard-visibility-list-container').append(emptyVisibilityListText);
-			}
-		}
-		
-		setColumnPlaceholder();
-	}
-	
-	setColumnPlaceholder();
 };
 
 function editCustomBox() {
@@ -226,6 +192,7 @@ function afterEditCustomBox(data) {
 	var html = data["html"];
 	
 	jQuery("#dashboard-custom-box-" + boxId).replaceWith(html);
+	
 	if(!visible) {
 		var boxElementId = '#dashboard-custom-box-' + boxId;
 		jQuery(boxElementId).parent("li").fadeOut(function() {
@@ -487,7 +454,7 @@ jQuery(document).ready(function() {
 	
 	//on show custom box clicked => show custom box
 	jQuery(document).on('click', 'form.show-custom-box', function() {
-		saveCustomBoxVisibility(jQuery(this));
+		saveBoxVisibility(jQuery(this));
 	});
 	
 	//on edit clicked => open custom box edit dialog with certain values

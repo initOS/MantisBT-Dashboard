@@ -76,6 +76,7 @@ function set_visibility() {
 	$f_visible = gpc_get_int('visible');
 	
 	$t_changed =  DashboardDbAPI::set_custom_box_visibility($f_box_id, $f_visible);
+	$t_link_item = DashboardPrintAPI::get_visibility_list_item_html($f_box_id);
 	
 	$t_return_data = array(
 			"box_id" => $f_box_id,

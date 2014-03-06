@@ -921,6 +921,7 @@ class DashboardPrintAPI
 		//print hide icon 
 		$t_html .= self::get_icon_link_html(self::ICON_LINK_DRAG, $t_box_id)
 				. self::get_icon_link_html(self::ICON_LINK_EDIT, $t_box_id)
+				. self::get_icon_link_html(self::ICON_LINK_HIDE, $t_box_id)
 				. '</td>'
 				. '</tr>';
 		
