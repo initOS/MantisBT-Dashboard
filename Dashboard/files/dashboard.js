@@ -403,7 +403,7 @@ jQuery(document).ready(function() {
 	//sortable
 	jQuery('#dashboard-sortable-col1, #dashboard-sortable-col2, #dashboard-sortable-col3').sortable( {
 		connectWith: '.connectedSortable',
-		containment: "window",
+		containment: "document",
 		tolerance: 'pointer',
 		handle: '.dashboard-drag',
 		placeholder: 'dashboard-box-placeholder',
