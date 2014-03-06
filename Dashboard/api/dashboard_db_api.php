@@ -653,7 +653,7 @@ class DashboardDbAPI
 		$t_column_visible= 'visible';
 		
 		# box does not exist so far for current user
-		if($p_box_id == 0 && !self::custom_box_exists($p_title, $p_filter_id)){	
+		if($p_box_id == 0 && $p_filter_id != null && !self::custom_box_exists($p_title, $p_filter_id)) {	
 			# save box
 			$t_query = "INSERT INTO $t_dashboard_table 
 						($t_column_user_id, $t_column_filter_id, $t_column_title) 
@@ -697,7 +697,7 @@ class DashboardDbAPI
 					$t_result = DashboardPrintAPI::get_custom_box_html($t_box);
 				}
 			}
-		} else if($p_box_id != 0 && self::custom_box_exists_with_id($p_box_id)){
+		} else if($p_box_id != 0 && $p_filter_id != null && self::custom_box_exists_with_id($p_box_id)){
 			#box exists for current user and should be changed
 			# update box
 			$t_query = "UPDATE $t_dashboard_table
@@ -792,7 +792,11 @@ class DashboardDbAPI
 	 * Saves the configured initial custom boxes for the current user
 	 */
 	static function create_initial_custom_boxes()
-	{		
+	{
+		if (!self::inital_custom_boxes_available()) {
+			return;
+		}
+		
 		$t_initial_custom_boxes_string = plugin_config_get('initial_custom_boxes');
 		$t_boxes = explode(',', $t_initial_custom_boxes_string);
 		
@@ -805,4 +809,15 @@ class DashboardDbAPI
 			self::save_custom_box($t_title, $t_filter_id);
 		}
 	}
+	
+	/**
+	 * Returns whether there are initial custom boxes configured.
+	 * 
+	 * @return boolean
+	 */
+	static function inital_custom_boxes_available()
+	{
+		$t_initial_custom_boxes_string = plugin_config_get('initial_custom_boxes');
+		return $t_initial_custom_boxes_string != "";
+	}  
 }
