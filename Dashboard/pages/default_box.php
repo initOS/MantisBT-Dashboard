@@ -83,14 +83,14 @@ function set_position() {
 # and returns the JSON encoded response.
 function set_visibility() {
 	$f_box_id = gpc_get_int('box_id');
-	$f_is_visible = gpc_get_int('visible');
+	$f_visible = gpc_get_int('visible');
 	
-	$t_changed =  DashboardDbAPI::set_box_visibility($f_box_id, $f_is_visible);
+	$t_changed =  DashboardDbAPI::set_box_visibility($f_box_id, $f_visible);
 	$t_link_item = DashboardPrintAPI::get_visibility_list_item_html($f_box_id);
 	
 	$t_return_data = array(
 		"box_id" => $f_box_id,
-		"visible" => $f_is_visible,
+		"visible" => $f_visible,
 		"saved" => $t_changed,
 		"link_show_html" => $t_link_item
 	);

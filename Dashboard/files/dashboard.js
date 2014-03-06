@@ -22,8 +22,8 @@ var baseURI = jQuery('script').context.baseURI.replace('%2F', '/');
 var regex = /[^\/]+\/?$/;
 var fileURI = baseURI.replace(regex, '')
 
-var custom_box_script = fileURI + 'custom_box.php';
-var default_box_script = fileURI + 'default_box.php';
+var customBoxScript = fileURI + 'custom_box.php';
+var defaultBoxScript = fileURI + 'default_box.php';
 
 var mainPageLink = 'main_page.php';
 var myViewPageLink = 'my_view_page.php';
@@ -99,7 +99,7 @@ function setProjectFilter(data) {
 };
 
 function saveBoxVisibility(form) {
-	var actionUrl = (customBoxesEnabled ? custom_box_script : default_box_script);
+	var actionUrl = (customBoxesEnabled ? customBoxScript : defaultBoxScript);
 	var boxId = form.children('input[name=box_id]').val();
 	var visible = form.children('input[name=visible]').val();
 	var dataValues = {
@@ -141,7 +141,7 @@ function createCustomBox() {
 	var boxTitle = jQuery("#create-box-title").val();
 	var boxFilterId = jQuery("#dashboard-new-box-dialog select[name=create-custom-filter-select]").val();
 		
-	var actionUrl = custom_box_script;
+	var actionUrl = customBoxScript;
 	var dataValues = { 
 			title : boxTitle,
 			filter_id: boxFilterId,
@@ -158,7 +158,7 @@ function editCustomBox() {
 	var visible = jQuery("#edit-box-visible-checkbox").prop('checked') ? 1 : 0;	
 	var boxId = jQuery("#delete-box-link input[name=box_id]").val();
 		
-	var actionUrl = custom_box_script;
+	var actionUrl = customBoxScript;
 	var dataValues = { title : boxTitle,
 					   filter_id: boxFilterId,
 					   visible: visible,
@@ -218,7 +218,7 @@ function saveCustomBoxPositions() {
 		positionString += escape(boxName) + ":" + boxId + ":" + column + seperator;
 	}			
 				
-	var actionUrl = custom_box_script;
+	var actionUrl = customBoxScript;
 	var dataValues = { box_positions : positionString,
 						action: 'position'
 					};
@@ -233,7 +233,7 @@ function afterSaveCustomBoxPositions(data) {
 
 function deleteCustomBox(data) {		
 	var boxId = jQuery("#delete-box-link input[name=box_id]").val();
-	var actionUrl = custom_box_script;
+	var actionUrl = customBoxScript;
 	var dataValues = { 
 			box_id: boxId,
 			action: 'delete'
@@ -431,7 +431,7 @@ jQuery(document).ready(function() {
 			});
 			*/
 			
-			var actionUrl = default_box_script;
+			var actionUrl = defaultBoxScript;
 			var dataValues = { project_id : select.val(),
 							   box_id: hiddenInput.val(),
 							   action: 'filter'
