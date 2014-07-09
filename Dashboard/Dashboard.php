@@ -80,12 +80,14 @@ class DashboardPlugin extends MantisPlugin
 		 			title				C(100)	NOTNULL DEFAULT \" 'untitled' \",
 		 			user_id				I		NOTNULL UNSIGNED, 
 		 			filter_id			I		NOTNULL UNSIGNED,
+		 			project_id			I		NOTNULL UNSIGNED,
 		 			visible				L 		NOTNULL UNSIGNED DEFAULT 1
 		 		")
 			), 
 				array('CreateTableSQL', array(plugin_table('custom_boxes_positions'), "
 		 			id					I		NOTNULL UNSIGNED AUTOINCREMENT PRIMARY,
 		 			user_id				I		NOTNULL UNSIGNED, 
+		 			project_id			I		NOTNULL UNSIGNED, 
 		 			positions			C(1000)  NOTNULL DEFAULT \"\"
 		 		")
 			)
