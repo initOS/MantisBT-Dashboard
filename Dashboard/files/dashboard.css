@@ -22,12 +22,30 @@
 .show-icon, .hide-icon, .drag-icon, .edit-icon, .delete-icon, .add-icon { width: 16px; height: 16px; display:inline-block; }
 .show-icon { position: relative;	top:0px; }
 
-.show-icon { background-image:url(plugin_file.php?file=Dashboard/show.png); background-position:0px 0px; }
-.hide-icon { background-image:url(plugin_file.php?file=Dashboard/hide.png); background-position:0px 0px; }
-.drag-icon { background-image:url(plugin_file.php?file=Dashboard/drag.png); background-position:0px 0px; }
-.edit-icon { background-image:url(plugin_file.php?file=Dashboard/edit.png); background-position:0px 0px; }
-.delete-icon { background-image:url(plugin_file.php?file=Dashboard/delete.png); background-position:0px 0px; }
-.add-icon { background-image:url(plugin_file.php?file=Dashboard/plus.png); background-position:0px 0px; }
+.show-icon {
+	background-image: url(/plugins/Dashboard/files/filesshow.png);
+	background-position: 0px 0px;
+}
+.hide-icon {
+	background-image: url(/plugins/Dashboard/files/hide.png);
+	background-position: 0px 0px;
+}
+.drag-icon {
+	background-image: url(/plugins/Dashboard/files/drag.png);
+	background-position: 0px 0px;
+}
+.edit-icon {
+	background-image: url(/plugins/Dashboard/files/edit.png);
+	background-position: 0px 0px;
+}
+.delete-icon {
+	background-image: url(/plugins/Dashboard/files/delete.png);
+	background-position: 0px 0px;
+}
+.add-icon {
+	background-image: url(/plugins/Dashboard/files/plus.png);
+	background-position: 0px 0px;
+}
 
 .hide-icon:hover, .hide-icon:focus { background-position:0px -16px; }
 .drag-icon:hover, .drag-icon:focus { background-position:0px -16px; }
