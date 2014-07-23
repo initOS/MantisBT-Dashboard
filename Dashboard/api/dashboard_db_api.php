@@ -59,7 +59,7 @@ class DashboardDbAPI
 	 */
 	static function custom_box_exists_with_id($p_box_id = 0)
 	{
-		if($p_box_id == 0){
+		if ($p_box_id == 0) {
 			return false;
 		}
 
@@ -77,7 +77,7 @@ class DashboardDbAPI
 	 */
 	static function custom_box_exists($p_title = "", $p_filter_id = 0)
 	{
-		if(empty($p_title) || $p_filter_id == 0){
+		if (empty($p_title) || $p_filter_id == 0) {
 			return false;
 		}
 
@@ -146,7 +146,7 @@ class DashboardDbAPI
 	 */
 	static function get_box_filter_project($p_box_id, $p_base = false)
 	{
-		if($p_box_id == 0){
+		if ($p_box_id == 0) {
 			return false;
 		}
 
@@ -155,14 +155,14 @@ class DashboardDbAPI
 		$t_column = "box_".$p_box_id."_filter_id";
 
 		$t_query = "SELECT $t_column FROM $t_dashboard_table
-					WHERE user_id = ".db_param();
+					WHERE user_id = " . db_param();
 
 		$t_result = db_query_bound($t_query, array($t_current_user_id));
 
 		$t_result_array = db_fetch_array($t_result);
 		$t_project_id = $t_result_array[$t_column];
 
-		if($p_base) {
+		if ($p_base) {
 			$t_splitted_project_id = split(';', $t_project_id);
 			$t_project_id = $t_splitted_project_id[0];
 		}
@@ -171,14 +171,15 @@ class DashboardDbAPI
 	}
 
 	/**
-	 * sets the filter project of a box of id $t_box_id
+	 * Sets the filter project of a box of id $t_box_id
+	 *
 	 * @param int $t_box_id
 	 * @param bool $t_filter_project_id
 	 * @return bool
 	 */
 	static function set_box_filter_project($p_box_id, $p_filter_project_id)
 	{
-		if($p_box_id == 0){
+		if ($p_box_id == 0) {
 			return false;
 		}
 
@@ -186,9 +187,8 @@ class DashboardDbAPI
 		$t_dashboard_table = plugin_table(self::TABLE_BOXES);
 
 		#if not already in db ==> insert
-		if(!self::dashoard_data_exists()){
+		if (!self::dashoard_data_exists()) {
 			#insert
-			#echo " - insert - ";
 			$t_query = "INSERT INTO $t_dashboard_table
 						(user_id, box_".$p_box_id."_filter_id)
 						VALUES (".db_param().','.db_param().")";
@@ -196,7 +196,6 @@ class DashboardDbAPI
 			$t_result = db_query_bound($t_query, array($t_current_user_id, $p_filter_project_id));
 		} else {
 			#update
-			#echo " - update - ";
 			$t_query = "UPDATE $t_dashboard_table
 						SET box_".$p_box_id."_filter_id = ".db_param()."
 				  		WHERE user_id = ".db_param();
@@ -214,7 +213,7 @@ class DashboardDbAPI
 	 */
 	static function get_box_visibility($p_box_id)
 	{
-		if($p_box_id == 0){
+		if ($p_box_id == 0) {
 			return false;
 		}
 
@@ -230,7 +229,7 @@ class DashboardDbAPI
 
 		$t_visible = true;
 
-		if(!empty($t_result_array)) {
+		if (!empty($t_result_array)) {
 			$t_visible = $t_result_array[$t_column];
 		}
 
@@ -245,7 +244,7 @@ class DashboardDbAPI
 	 */
 	static function set_box_visibility($p_box_id, $p_is_visible)
 	{
-		if($p_box_id == 0){
+		if ($p_box_id == 0) {
 			return false;
 		}
 
@@ -254,7 +253,7 @@ class DashboardDbAPI
 		$t_column = "show_box_".$p_box_id;
 
 		#if not already in db ==> insert
-		if(!DashboardDbAPI::dashoard_data_exists()){
+		if (!DashboardDbAPI::dashoard_data_exists()) {
 			#insert
 			$t_query = "INSERT INTO $t_dashboard_table
 						(user_id, $t_column)
@@ -292,13 +291,13 @@ class DashboardDbAPI
 
 		$t_result = db_query_bound($t_query, array($t_current_user_id));
 
-		if($t_result != false) {
+		if ($t_result != false) {
 			$t_result_array = db_fetch_array($t_result);
 
-			if($t_result_array) {
+			if ($t_result_array) {
 				$t_position_string = $t_result_array[$t_column_positions];
 
-				if(!empty($t_position_string)) {
+				if (!empty($t_position_string)) {
 					$t_boxes = self::_boxes_data_from_position_string($t_position_string);
 				}
 			} else {
@@ -327,7 +326,7 @@ class DashboardDbAPI
 	 */
 	static function set_boxes_position($p_position_string)
 	{
-		if(empty($p_position_string)){
+		if (empty($p_position_string)) {
 			return false;
 		}
 
@@ -342,7 +341,7 @@ class DashboardDbAPI
 
 		$t_dashboard_table = '';
 
-		if($t_default_boxes_view){
+		if ($t_default_boxes_view) {
 			$t_dashboard_table = plugin_table(self::TABLE_BOXES);
 		} else {
 			$t_dashboard_table = plugin_table(self::TABLE_CUSTOM_BOXES_POSITIONS);
@@ -353,7 +352,7 @@ class DashboardDbAPI
 		$t_column_project_id = 'project_id';
 
 		#if not already in db ==> insert
-		if(!DashboardDbAPI::dashoard_data_exists()){
+		if (!DashboardDbAPI::dashoard_data_exists()) {
 			#insert
 			$t_query = "INSERT INTO $t_dashboard_table
 						($t_column_user_id, $t_column_positions, $t_column_project_id)
@@ -380,7 +379,7 @@ class DashboardDbAPI
 	 */
 	static function get_custom_box_visibility($p_box_id)
 	{
-		if($p_box_id == 0){
+		if ($p_box_id == 0) {
 			return false;
 		}
 
@@ -398,13 +397,13 @@ class DashboardDbAPI
 
 		$t_visible = true;
 
-		if(!empty($t_result_array)) {
-			if(strlen($t_result_array[$t_column])<2){
+		if (!empty($t_result_array)) {
+			if (strlen($t_result_array[$t_column]) < 2) {
 				$t_visible = (int) $t_result_array[$t_column];
-			}else{
+			} else {
 				$arData = @unserialize($t_result_array[$t_column]);
 
-				if(is_array($arData) && array_key_exists($t_current_project_id, $arData)){
+				if (is_array($arData) && array_key_exists($t_current_project_id, $arData)) {
 					$t_visible = (int) $arData[$t_current_project_id];
 				}
 			}
@@ -422,7 +421,7 @@ class DashboardDbAPI
 	 */
 	static function set_custom_box_visibility($p_box_id, $p_visible)
 	{
-		if($p_box_id == 0){
+		if ($p_box_id == 0) {
 			return false;
 		}
 
@@ -448,7 +447,7 @@ class DashboardDbAPI
 		$arData[$t_current_project_id] = (int) $p_visible;
 
 		#if not already in db ==> insert
-		if(!DashboardDbAPI::custom_box_exists_with_id($p_box_id)){
+		if (!DashboardDbAPI::custom_box_exists_with_id($p_box_id)) {
 			#insert
 			$t_query = "INSERT INTO $t_dashboard_table
 						(user_id, $t_column)
@@ -478,7 +477,7 @@ class DashboardDbAPI
 	 */
 	static function get_custom_box_filter($p_box_id, $p_get_as_name = false)
 	{
-		if($p_box_id == 0){
+		if ($p_box_id == 0) {
 			return false;
 		}
 
@@ -494,7 +493,7 @@ class DashboardDbAPI
 
 		$t_filter_id = -1;
 
-		if(!empty($t_result_array)) {
+		if (!empty($t_result_array)) {
 			$t_filter_id = $t_result_array[$t_column];
 			$t_return_value = $t_filter_id;
 
@@ -518,7 +517,7 @@ class DashboardDbAPI
 	 */
 	static function get_custom_box_id($p_user_id, $p_title, $p_filter_id)
 	{
-		if(empty($p_title) || $p_filter_id == 0 || $p_user_id == 0){
+		if (empty($p_title) || $p_filter_id == 0 || $p_user_id == 0) {
 			return false;
 		}
 
@@ -537,7 +536,7 @@ class DashboardDbAPI
 
 		$t_result = db_query_bound($t_query, array($p_user_id, $p_title, $p_filter_id));
 
-		if($t_result != false){
+		if ($t_result != false) {
 			$t_result_array = db_fetch_array($t_result);
 			$t_id = $t_result_array[$t_column_id];
 		}
@@ -554,7 +553,7 @@ class DashboardDbAPI
 	 */
 	static function get_custom_box_data($p_box_id)
 	{
-		if($p_box_id == 0){
+		if ($p_box_id == 0) {
 			return false;
 		}
 
@@ -573,10 +572,11 @@ class DashboardDbAPI
 		$t_result_array = db_fetch_array($t_result);
 
 		$arData = unserialize($t_result_array['visible']);
-		if(is_array($arData)==true){
-			if(array_key_exists($t_current_project_id, $arData)==true){
+
+		if (is_array($arData)) {
+			if (array_key_exists($t_current_project_id, $arData)){
 				$t_result_array['visible'] = $arData[$t_current_project_id];
-			}else{
+			} else {
 				$t_result_array['visible'] = 1;
 			}
 		}
@@ -600,17 +600,17 @@ class DashboardDbAPI
 		$t_column_user_id = 'user_id';
 		$t_column_project_id = 'project_id';
 
-		if(self::user_has_custom_boxes()){
+		if (self::user_has_custom_boxes()) {
 			$t_query = "SELECT $t_column_positions
 						FROM $t_dashboard_table
 						WHERE $t_column_user_id = ".db_param() . " AND $t_column_project_id = " . db_param();
 
 			$t_result = db_query_bound($t_query, array($t_current_user_id, $t_current_project_id));
-			if($t_result != false) {
+			if ($t_result != false) {
 				$t_result_array = db_fetch_array($t_result);
 				$t_position_string = $t_result_array[$t_column_positions];
 
-				if(!empty($t_position_string)) { # position string set => use it!
+				if (!empty($t_position_string)) { # position string set => use it!
 					$t_boxes = self::_boxes_data_from_position_string($t_position_string);
 				}
 
@@ -625,12 +625,13 @@ class DashboardDbAPI
 
 				$t_result = db_query_bound($t_query, array($t_current_user_id, $t_current_project_id));
 
-				if($t_result != false) {
+				if ($t_result != false) {
 					$t_count = 0;
 
 					foreach ($t_result as $t_box) {
-						if(is_array($t_boxes)==true and array_key_exists($t_box['id'], $t_boxes) == true)
+						if (is_array($t_boxes) && array_key_exists($t_box['id'], $t_boxes)) {
 							continue;
+						}
 
 						$t_count++;
 						$t_column = (($t_count % 3) == 0) ? 3 : ($t_count % 3);
@@ -705,7 +706,7 @@ class DashboardDbAPI
 		$t_column_visible= 'visible';
 
 		# box does not exist so far for current user
-		if($p_box_id == 0 && $p_filter_id != null && !self::custom_box_exists($p_title . $t_column_project_id, $p_filter_id)) {
+		if ($p_box_id == 0 && $p_filter_id != null && !self::custom_box_exists($p_title . $t_column_project_id, $p_filter_id)) {
 			# save box
 			$t_query = "INSERT INTO $t_dashboard_table
 						($t_column_user_id, $t_column_filter_id, $t_column_title, $t_column_project_id)
@@ -713,7 +714,7 @@ class DashboardDbAPI
 
 			$t_query_result = db_query_bound($t_query, array($t_current_user_id, $p_filter_id, $p_title, $t_current_project_id));
 
-			if($t_query_result != false){
+			if ($t_query_result != false) {
 				$t_saved = true;
 				$t_box_id = self::get_custom_box_id($t_current_user_id, $p_title, $p_filter_id);
 
@@ -727,11 +728,11 @@ class DashboardDbAPI
 
 				$t_result = db_query_bound($t_query, array($t_current_user_id, $t_current_project_id));
 
-				if($t_result != false) {
+				if ($t_result != false) {
 					$t_result_array = db_fetch_array($t_result);
 					$t_position_string = $t_result_array[$t_column_positions];
 
-					if(!empty($t_position_string)) { # position string set => use it!
+					if (!empty($t_position_string)) { # position string set => use it!
 						$t_position_string .= ",$p_title:$t_box_id";
 
 						# update positions string in table
@@ -745,13 +746,13 @@ class DashboardDbAPI
 				#--------------------------------------------------------------------------------
 
 
-				if($t_box_id != false){
+				if ($t_box_id != false) {
 					# create box html to return and insert box via JavaScript
 					$t_box = self::get_custom_box_data($t_box_id);
 					$t_result = DashboardPrintAPI::get_custom_box_html($t_box);
 				}
 			}
-		} else if($p_box_id != 0 && $p_filter_id != null && self::custom_box_exists_with_id($p_box_id)){
+		} else if ($p_box_id != 0 && $p_filter_id != null && self::custom_box_exists_with_id($p_box_id)) {
 			#box exists for current user and should be changed
 			# update box
 			$t_query = "UPDATE $t_dashboard_table
@@ -764,13 +765,14 @@ class DashboardDbAPI
 			DashboardDbAPI::set_custom_box_visibility($p_box_id, $p_visible);
 
 			# create return html array
-			if($t_updated){
+			if ($t_updated) {
 				$t_saved = true;
 				$t_box_id = self::get_custom_box_id($t_current_user_id, $p_title, $p_filter_id);
 
-				if($t_box_id != false){
+				if ($t_box_id != false) {
 					$t_box = self::get_custom_box_data($p_box_id);
-					if($t_box != false){
+
+					if ($t_box != false) {
 						$t_result = DashboardPrintAPI::get_custom_box_html($t_box);
 					}
 				}
@@ -802,7 +804,7 @@ class DashboardDbAPI
 		$t_column_id = 'id';
 		$t_column_user_id = 'user_id';
 
-		if(self::custom_box_exists_with_id($p_box_id)){
+		if (self::custom_box_exists_with_id($p_box_id)) {
 
 			$t_query = "DELETE FROM $t_dashboard_table
 						WHERE $t_column_id = " . db_param() .
