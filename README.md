@@ -11,15 +11,15 @@ It has these features:
 
 - complete jQuery Interface
 - Classic Mode or Filter-Used Mode
-- per user configurable
+- per user & project configurable
 - drag & drop positioning
 - add, edit, remove and hide boxes
 - configurable initial custom boxes
 
-Version
+Current Version
 -------
 
-0.5.2
+0.6.0
 
 Dependencies
 ------------
@@ -34,22 +34,24 @@ There are two possibilities to use the dashboard:
  
 __A) with customizable default boxes:__
  
-- customizable project filter via select box in each bug box  
-- customizable visibility per bug box  
-- customizable position per bug box (via jQueryUI sortable)  
+- customizable project filter via select box in each bug box
+- customizable visibility per bug box & project
+- customizable position per bug box & project (via jQueryUI sortable)
 		
 __B) with custom boxes:__
  
-- create own boxes by naming and choosing a custom filter  
-- customizable visibility per bug box  
-- customizable position per bug box (via jQueryUI sortable)  
+- create own boxes by naming and choosing a custom filter
+- customizable visibility per bug box & project
+- customizable position per bug box & project (via jQueryUI sortable)
+
+Boxes which are created under *"All Projects"* are available for all projects. Boxes created in a certain project are just available in this project. Initial boxes are assigned to all projects.
 
 Installation
 ------------
 
 1. Download the files and place the folder `Dashboard` in the directory `plugins/` of your Mantis installation. 
 2. With administrator privileges, go to the page *"Manage"* / *"Manage Plugins"*
-3. In the list *"Available Plugins"*, you should see *"Dashboard 0.5.2"*: click the install link for the plugin.
+3. In the list *"Available Plugins"*, you should see *"Dashboard 0.6.0"*: click the install link for the plugin.
 
 The Dashboard is now available under the *"Dashboard"* menu entry and is set as the default home page. *"Main"* and *"My View"* menu items are removed by the Dashboard plugin.
 
@@ -70,7 +72,7 @@ Data tables
 
 _Default boxes:_
 
-    mantis_plugin_dashboard_boxes_table
+	mantis_plugin_dashboard_boxes_table
 
  
 _Custom boxes:_
@@ -85,3 +87,11 @@ References
 
 *This plugin idea comes from: https://github.com/rolfkleef/mantisbt-dashboard, thanks for that, we hope you enjoy!*
 
+Contributing
+------------
+
+1. Fork it (https://github.com/initOS/MantisBT-Dashboard/fork)
+2. Create your feature branch from develop branch (`git checkout -b my-new-feature develop`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
