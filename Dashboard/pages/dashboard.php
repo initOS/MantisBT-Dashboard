@@ -22,47 +22,45 @@
 	/**
 	 * MantisBT Core API's
 	 */
-	require_once( 'core.php' );
+	require_once('core.php');
 	/**
 	 *  requires compress_api
 	 */
-	require_once( 'compress_api.php' );
+	require_once('compress_api.php');
 	/**
 	 * requires last visited api
 	 */
-	require_once( 'last_visited_api.php' );
+	require_once('last_visited_api.php');
 	/**
 	 * require dashboard print api
 	 */
-	require_once( dirname(__DIR__) . DIRECTORY_SEPARATOR . "api" . DIRECTORY_SEPARATOR . "dashboard_print_api.php");
-	
+	require_once(dirname(__DIR__) . DIRECTORY_SEPARATOR . "api" . DIRECTORY_SEPARATOR . "dashboard_print_api.php");
+
 
 	auth_ensure_user_authenticated();
 	$t_current_user_id = auth_get_current_user_id();
 
 	# Improve performance by caching category data in one pass
-	category_get_all_rows( helper_get_current_project() );
+	category_get_all_rows(helper_get_current_project());
 	compress_enable();
 
 	# don't index my view page
 	html_robots_noindex();
 
-	html_page_top1( plugin_lang_get( 'menuname' ) );
+	html_page_top1(plugin_lang_get('menuname'));
 
-	if ( current_user_get_pref( 'refresh_delay' ) > 0 ) {
+	if (current_user_get_pref('refresh_delay') > 0) {
 		$t_redirect_path = 'plugin.php?page=Dashboard/dashboard';
-		html_meta_redirect( $t_redirect_path, current_user_get_pref( 'refresh_delay' ) * 60, false);
+		html_meta_redirect($t_redirect_path, current_user_get_pref('refresh_delay') * 60, false);
 	}
-	
-	
-	#config_set('show_project_menu_bar', OFF );
+
 	html_page_top2();
 
-	print_recently_visited();	
+	print_recently_visited();
 
-	$f_page_number = gpc_get_int( 'page_number', 1 );
+	$f_page_number = gpc_get_int('page_number', 1);
 
-	$t_per_page = config_get( 'my_view_bug_count' );
+	$t_per_page = config_get('my_view_bug_count');
 	$t_bug_count = null;
 	$t_page_count = null;
 ?>
@@ -71,34 +69,34 @@
 <?php
 	# print show box links
 	DashboardPrintAPI::print_visibility_link_list();
-	
-	$t_status_legend_position = config_get( 'status_legend_position' );
 
-	if ( $t_status_legend_position == STATUS_LEGEND_POSITION_TOP || $t_status_legend_position == STATUS_LEGEND_POSITION_BOTH ) {
+	$t_status_legend_position = config_get('status_legend_position');
+
+	if ($t_status_legend_position == STATUS_LEGEND_POSITION_TOP || $t_status_legend_position == STATUS_LEGEND_POSITION_BOTH) {
 		html_status_legend();
 		echo '<br />';
 	}
 ?>
 <div id="sortable-container" class="cf">
 <?php
-	if(ON == plugin_config_get('allow_default_boxes_view')) {
+	if (ON == plugin_config_get('allow_default_boxes_view')) {
 		DashboardPrintAPI::print_positioned_default_boxes();
 	} else if(ON == plugin_config_get('allow_custom_boxes_view')){
-		if(!DashboardDbAPI::user_has_custom_boxes()) {
-			DashboardDbAPI::create_initial_custom_boxes();	
+		if (!DashboardDbAPI::user_has_custom_boxes()) {
+			DashboardDbAPI::create_initial_custom_boxes();
 		}
-		
+
 		DashboardPrintAPI::print_positioned_custom_boxes();
 	}
 ?>
 </div>
 
-<?php	
+<?php
 	# print info dialog
 	echo DashboardPrintAPI::get_info_dialog_html();
 	echo DashboardPrintAPI::get_info_dialog_html("", "error-dialog", plugin_lang_get('error'));
-	
-	if ( $t_status_legend_position == STATUS_LEGEND_POSITION_BOTTOM || $t_status_legend_position == STATUS_LEGEND_POSITION_BOTH ) {
+
+	if ($t_status_legend_position == STATUS_LEGEND_POSITION_BOTTOM || $t_status_legend_position == STATUS_LEGEND_POSITION_BOTH) {
 		html_status_legend();
 	}
 ?>

@@ -18,20 +18,20 @@
  * @author InitOS GmbH & Co.KG
  * @author Paul Götze <paul.goetze@initos.com>
  */
- 
+
 # checks whether request is post
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 	header("Location: " . $_SERVER['DOCUMENT_ROOT']);
    	exit();
 }
 
-$t_mantis_core_path = dirname(dirname(dirname( __DIR__ ))) . DIRECTORY_SEPARATOR;
+$t_mantis_core_path = dirname(dirname(dirname(__DIR__))) . DIRECTORY_SEPARATOR;
 $t_mantis_api_path = $t_mantis_core_path . DIRECTORY_SEPARATOR . "core" .DIRECTORY_SEPARATOR;
 require_once($t_mantis_core_path . "core.php");
 require_once($t_mantis_api_path . "gpc_api.php");
 require_once($t_mantis_api_path ."project_api.php");
 require_once($t_mantis_api_path . "plugin_api.php");
-require_once( dirname(__DIR__) . DIRECTORY_SEPARATOR . "api" . DIRECTORY_SEPARATOR . "dashboard_print_api.php");
+require_once(dirname(__DIR__) . DIRECTORY_SEPARATOR . "api" . DIRECTORY_SEPARATOR . "dashboard_print_api.php");
 
 const CREATE = 'create';
 const EDIT = 'edit';
@@ -40,71 +40,71 @@ const POSITION = 'position';
 const VISIBILITY = 'visibility';
 const FILTER = 'filter';
 
-# Sets the box's custom filter with the given parameters 
+# Sets the box's custom filter with the given parameters
 # and returns the JSON encoded response.
 function set_filter() {
 	$f_box_id = gpc_get_int('box_id');
 	$f_filter_id = gpc_get_int('filter_id');
 
 	$t_changed =  DashboardDbAPI::set_custom_box_filter($f_box_id, $f_filter_id);
-	
-	$t_return_data = array(
-			"saved" => $t_changed,
-	);	
-	
-	return json_encode($t_return_data);
-};
 
-# Sets the boxes position with the given parameters 
-# and returns the JSON encoded response.
-function set_position() {
-	$f_position_string = gpc_get_string('box_positions', '');
-	
-	$t_changed = DashboardDbAPI::set_boxes_position($f_position_string);
-	
 	$t_return_data = array(
 			"saved" => $t_changed,
 	);
-	
+
 	return json_encode($t_return_data);
 };
 
-# Sets the boxes visibility with the given parameters 
+# Sets the boxes position with the given parameters
+# and returns the JSON encoded response.
+function set_position() {
+	$f_position_string = gpc_get_string('box_positions', '');
+
+	$t_changed = DashboardDbAPI::set_boxes_position($f_position_string);
+
+	$t_return_data = array(
+			"saved" => $t_changed,
+	);
+
+	return json_encode($t_return_data);
+};
+
+# Sets the boxes visibility with the given parameters
 # and returns the JSON encoded response.
 function set_visibility() {
 	$f_box_id = gpc_get_int('box_id');
 	$f_visible = gpc_get_int('visible');
-	
+
 	$t_changed =  DashboardDbAPI::set_custom_box_visibility($f_box_id, $f_visible);
 	$t_link_item = DashboardPrintAPI::get_visibility_list_item_html($f_box_id);
-	
+
 	$t_return_data = array(
 			"box_id" => $f_box_id,
 			"visible" => $f_visible,
 			"saved" => $t_changed,
 			"link_show_html" => $t_link_item
 	);
-	
+
 	return json_encode($t_return_data);
 };
 
-# Creates the new box with the given parameters 
+# Creates the new box with the given parameters
 # and returns the JSON encoded response.
 function create() {
 	$t_untitled = plugin_lang_get('untitled');
-	
+
 	$f_title = gpc_get_string('title', $t_untitled);
 	$f_filter_id = gpc_get_int('filter_id', 0);
 	$f_box_id = gpc_get_int('box_id', 0);
 	$f_visible = gpc_get_int('visible', 1);
-	
-	if(empty($f_title)){
+
+	if (empty($f_title)) {
 		$f_title = $t_untitled;
 	}
-	
+
 	$t_result_array =  DashboardDbAPI::save_custom_box($f_title, $f_filter_id, $f_box_id, $f_visible);
 	$t_link_item = DashboardPrintAPI::get_visibility_list_item_html($f_box_id);
-	
+
 	$t_return_data = array(
 			"saved" => (boolean)($t_result_array['saved']),
 			"box_id" => $f_box_id,
@@ -112,37 +112,37 @@ function create() {
 			"link_show_html" => $t_link_item,
 			"visible" => $f_visible
 	);
-	
+
 	return json_encode($t_return_data);
 };
 
-# Deletes the box with the given parameters 
+# Deletes the box with the given parameters
 # and returns the JSON encoded response.
 function delete() {
 	$f_box_id = gpc_get_int('box_id', 0);
-	
+
 	$t_box = DashboardDbAPI::get_custom_box_data($f_box_id);
 	$t_title = $t_box['title'];
-	
+
 	$t_result =  DashboardDbAPI::delete_custom_box($f_box_id);
 	$t_deleted = ($t_result != false);
-	
-	$t_message = $t_deleted ? (plugin_lang_get('error_the_box_with_title') . 
+
+	$t_message = $t_deleted ? (plugin_lang_get('error_the_box_with_title') .
 			$t_title . plugin_lang_get('has_been_deleted')) : "Error occured while deleting!";
-	
+
 	$t_return_data = array(
 			"saved" => $t_saved,
 			"box_id" => $f_box_id,
 			"message" => $t_message
 	);
-	
+
 	return json_encode($t_return_data);
 };
 
 # Runs the action by the given action parameter.
 function run_action($p_action) {
 	$t_json_response = "";
-	
+
 	switch ($p_action) {
 		case CREATE:
 		case EDIT:
@@ -168,8 +168,8 @@ function run_action($p_action) {
 	};
 
 	$t_javascript_on = (ON == config_get('use_javascript'));
-	
-	if($t_javascript_on){
+
+	if ($t_javascript_on) {
 		echo $t_json_response;
 	} else {
 		header("Location:" . plugin_page('dashboard'));
