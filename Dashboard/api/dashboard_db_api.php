@@ -218,19 +218,24 @@ class DashboardDbAPI
 		}
 
 		$t_current_user_id = auth_get_current_user_id();
+		$t_current_project_id = helper_get_current_project();
+
 		$t_dashboard_table = plugin_table(self::TABLE_BOXES);
-		$t_column = "show_box_".$p_box_id;
+		$t_column_visibility = "show_box_" . $p_box_id;
+		$t_column_user_id = "user_id";
+		$t_column_project_id = "project_id";
 
-		$t_query = "SELECT $t_column FROM $t_dashboard_table
-					WHERE user_id = ".db_param();
+		$t_query = "SELECT $t_column_visibility FROM $t_dashboard_table
+					WHERE $t_column_user_id = " . db_param() .
+					" AND $t_column_project_id = " . db_param();
 
-		$t_result = db_query_bound($t_query, array($t_current_user_id));
+		$t_result = db_query_bound($t_query, array($t_current_user_id, $t_current_project_id));
 		$t_result_array = db_fetch_array($t_result);
 
 		$t_visible = true;
 
 		if (!empty($t_result_array)) {
-			$t_visible = $t_result_array[$t_column];
+			$t_visible = $t_result_array[$t_column_visibility];
 		}
 
 		return $t_visible;
@@ -249,24 +254,29 @@ class DashboardDbAPI
 		}
 
 		$t_current_user_id = auth_get_current_user_id();
+		$t_current_project_id = helper_get_current_project();
+
 		$t_dashboard_table = plugin_table(self::TABLE_BOXES);
-		$t_column = "show_box_".$p_box_id;
+		$t_column_visibility = "show_box_" . $p_box_id;
+		$t_column_user_id = "user_id";
+		$t_column_project_id = "project_id";
 
 		#if not already in db ==> insert
 		if (!DashboardDbAPI::dashoard_data_exists()) {
 			#insert
 			$t_query = "INSERT INTO $t_dashboard_table
-						(user_id, $t_column)
-						VALUES (".db_param().','.db_param().")";
+						($t_column_user_id, $t_column_visibility, $t_column_project_id)
+						VALUES (".db_param() . ',' . db_param() . ',' . db_param() . ")";
 
-			$t_result = db_query_bound($t_query, array($t_current_user_id, $p_is_visible));
+			$t_result = db_query_bound($t_query, array($t_current_user_id, $p_is_visible, $t_current_project_id));
 		} else {
 			#update
 			$t_query = "UPDATE $t_dashboard_table
-						SET $t_column = ".db_param()."
-				  		WHERE user_id=".db_param();
+						SET $t_column_visibility = ".db_param() .
+				  		" WHERE $t_column_user_id = " . db_param() .
+						" AND $t_column_project_id = " . db_param();
 
-			$t_result = db_query_bound($t_query, array($p_is_visible, $t_current_user_id));
+			$t_result = db_query_bound($t_query, array($p_is_visible, $t_current_user_id, $t_current_project_id));
 		}
 
 		return $t_result != false;
@@ -282,14 +292,18 @@ class DashboardDbAPI
 		$t_boxes = array();
 
 		$t_current_user_id = auth_get_current_user_id();
+		$t_current_project_id = helper_get_current_project();
+
 		$t_dashboard_table = plugin_table(self::TABLE_BOXES);
 		$t_column_positions = 'positions';
 		$t_column_user_id = 'user_id';
+		$t_column_project_id = 'project_id';
 
 		$t_query = "SELECT $t_column_positions FROM $t_dashboard_table
-					WHERE $t_column_user_id = ".db_param();
+					WHERE $t_column_user_id = " . db_param() .
+					" AND $t_column_project_id = " . db_param();
 
-		$t_result = db_query_bound($t_query, array($t_current_user_id));
+		$t_result = db_query_bound($t_query, array($t_current_user_id, $t_current_project_id));
 
 		if ($t_result != false) {
 			$t_result_array = db_fetch_array($t_result);
