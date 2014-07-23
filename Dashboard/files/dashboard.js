@@ -18,9 +18,14 @@
 #  @author Paul Götze <paul.goetze@initos.com>
 */
 
-var baseURI = jQuery('script').context.baseURI.replace('%2F', '/');
+//var baseURI = $('head base').attr('href').replace('%2F', '/');//jQuery('script').context.baseURI;
+//var baseURI = '/plugin.php?page=Dashboard/dashboard';
+var pathArray = window.location.href.split( '/' );
+var protocol = pathArray[0];
+var host = pathArray[2];
+var baseURI = protocol + '//' + host + '/plugin.php?page=Dashboard/dashboard';
 var regex = /[^\/]+\/?$/;
-var fileURI = baseURI.replace(regex, '')
+var fileURI = baseURI.replace(regex, '');
 
 var customBoxScript = fileURI + 'custom_box.php';
 var defaultBoxScript = fileURI + 'default_box.php';

@@ -20,13 +20,13 @@
  */
 
 auth_reauthenticate();
-access_ensure_global_level( config_get( 'manage_plugin_threshold' ) );
-$f_boxes_view = gpc_get_string( 'boxes_view', 'custom');
+access_ensure_global_level(config_get('manage_plugin_threshold'));
+$f_boxes_view = gpc_get_string('boxes_view', 'custom');
 $f_initial_boxes = gpc_get_string('available_boxes_string', '');
 
-if($f_boxes_view == 'default'){
+if ($f_boxes_view == 'default') {
 	$t_default = ON;
-	$t_custom = OFF;	
+	$t_custom = OFF;
 } else {
 	$t_default = OFF;
 	$t_custom = ON;
@@ -37,4 +37,4 @@ plugin_config_set('allow_custom_boxes_view', $t_custom);
 plugin_config_set('allow_default_boxes_view', $t_default);
 plugin_config_set('initial_custom_boxes', $f_initial_boxes);
 
-print_successful_redirect( plugin_page( 'config_page',TRUE ) );
+print_successful_redirect(plugin_page('config_page',TRUE));

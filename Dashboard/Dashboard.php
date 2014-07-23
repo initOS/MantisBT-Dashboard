@@ -16,22 +16,23 @@
 
 /**
  * MantisBT Dashoard Plugin - Customize each bug boxes filter project, visibility & position.
- * 
+ *
  * @author InitOS GmbH & Co.KG
  * @author Paul Götze <paul.goetze@initos.com>
  */
 class DashboardPlugin extends MantisPlugin
-{	
+{
 	/*
 	 * implementation of abstract plugin base class function
 	 */
-	public function register() {
+	public function register()
+	{
 		$this->name = "Dashboard";				 				#itle of plugin
 		$this->description = plugin_lang_get('description');	#description text
 		$this->page = 'config_page';							#configure page file
 
-		$this->version = '0.5.2';     	# Plugin version string
-		$this->requires = array(    	# Plugin dependencies, array of basename => version pairs
+		$this->version = '0.6.0';     	# Plugin version string
+		$this->requires = array(	   	# Plugin dependencies, array of basename => version pairs
             'MantisCore' => '1.2.0',  	# Should always depend on an appropriate version of MantisBT
             'jQuery' => '1.9.1',		# jQuery for AJAX calls (including jQueryUI v1.10.3)
             							# plugin-link: https://github.com/initOS/jquery.git
@@ -40,7 +41,7 @@ class DashboardPlugin extends MantisPlugin
 		$this->author = 'InitOS GmbH & Co. KG <Paul Götze,Markus Schneider>'; # Author/team name
 		$this->contact = 'info@initos.com'; # Author/team e-mail address
 		$this->url = 'https://github.com/initOS/MantisBT-Dashboard'; # Support webpage
-		
+
 		# set home page from default my_view_page.php to Dashboard
 		config_set_global('default_home_page', 'plugin.php?page=Dashboard/dashboard');
 	}
@@ -49,9 +50,10 @@ class DashboardPlugin extends MantisPlugin
 	 * creates table for plugin data (plugin_table_dashboard_boxes)
 	 * @return array (table create SQL String)
 	 */
-	public function schema() {
+	public function schema()
+	{
 		return array(
-			array('CreateTableSQL', array(plugin_table('boxes'), " 
+			array('CreateTableSQL', array(plugin_table('boxes'), "
 					id					I 		NOTNULL UNSIGNED AUTOINCREMENT PRIMARY,
 					user_id				I 		NOTNULL UNSIGNED,
 					show_box_1			L 		NOTNULL UNSIGNED DEFAULT 1,
@@ -78,16 +80,32 @@ class DashboardPlugin extends MantisPlugin
 		 		array('CreateTableSQL', array(plugin_table('custom_boxes'), "
 		 			id					I		NOTNULL UNSIGNED AUTOINCREMENT PRIMARY,
 		 			title				C(100)	NOTNULL DEFAULT \" 'untitled' \",
-		 			user_id				I		NOTNULL UNSIGNED, 
+		 			user_id				I		NOTNULL UNSIGNED,
 		 			filter_id			I		NOTNULL UNSIGNED,
 		 			visible				L 		NOTNULL UNSIGNED DEFAULT 1
 		 		")
-			), 
+			),
 				array('CreateTableSQL', array(plugin_table('custom_boxes_positions'), "
 		 			id					I		NOTNULL UNSIGNED AUTOINCREMENT PRIMARY,
-		 			user_id				I		NOTNULL UNSIGNED, 
+		 			user_id				I		NOTNULL UNSIGNED,
 		 			positions			C(1000)  NOTNULL DEFAULT \"\"
 		 		")
+			),
+				array('AddColumnSQL', array(plugin_table('custom_boxes'), "
+						project_id			I		NOTNULL UNSIGNED DEFAULT 0
+				")
+			),
+				array('AddColumnSQL', array(plugin_table('custom_boxes_positions'), "
+						project_id			I		NOTNULL UNSIGNED DEFAULT 0
+				")
+			),
+				array('AlterColumnSQL', array(plugin_table('custom_boxes'), "
+						visible	C(1000)
+				")
+			),
+				array('AddColumnSQL', array(plugin_table('boxes'), "
+						project_id			I		NOTNULL UNSIGNED DEFAULT 0
+				")
 			)
 		);
 	}
@@ -95,7 +113,8 @@ class DashboardPlugin extends MantisPlugin
 	/**
 	 * plugin config
 	 */
-	function config() {
+	function config()
+	{
 		return array (
 			'allow_custom_boxes_view' => ON,
 			'allow_default_boxes_view' => OFF,
@@ -106,18 +125,20 @@ class DashboardPlugin extends MantisPlugin
 	/**
 	 * hooks events
 	 */
-	public function hooks() {
+	public function hooks()
+	{
         return array(
             'EVENT_MENU_MAIN_FRONT' => 'add_to_main_menu',
             'EVENT_LAYOUT_RESOURCES' => 'resources'
         );
 	}
-    
+
 	/**
 	 * adds dashboard link to the main menu
 	 * @param $p_event
 	 */
-	function add_to_main_menu($p_event) {
+	function add_to_main_menu($p_event)
+	{
         return array (
         	'<a href="' . plugin_page('dashboard') . '">' . plugin_lang_get('menuname') .'</a>'
         );
@@ -126,21 +147,20 @@ class DashboardPlugin extends MantisPlugin
 	/**
 	 * init - requires the api files
 	 */
-	public function init() {
-		#require_once 'api/dashboard_print_api.php';
+	public function init()
+	{
 		require_once 'api/dashboard_db_api.php';
 	}
-	
+
 	/**
 	 * loads js and css resources
 	 */
-	public function resources($p_event) {
-		$resources = '<script type="text/javascript" src="' . plugin_page('php_vars_to_js.php') . '"></script> ' . 
-				'<script type="text/javascript" src="' . plugin_file('dashboard.js') . '"></script>' . 
+	public function resources($p_event)
+	{
+		$resources = '<script type="text/javascript" src="' . plugin_page('php_vars_to_js.php') . '"></script> ' .
+				'<script type="text/javascript" src="' . plugin_file('dashboard.js') . '"></script>' .
 				'<link rel="stylesheet" type="text/css" href="' . plugin_file("dashboard.css") . '" />';
-					 
+
 		return $resources;
 	}
 }
-
-
