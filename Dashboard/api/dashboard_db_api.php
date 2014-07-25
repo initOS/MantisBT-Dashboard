@@ -307,6 +307,16 @@ class DashboardDbAPI
 
 		if ($t_result != false) {
 			$t_result_array = db_fetch_array($t_result);
+			# If there is no project-specific position, we use the global one instead.
+			if (!$t_result_array) {
+				$t_query = "SELECT $t_column_positions
+					FROM $t_dashboard_table
+					WHERE $t_column_user_id = ".db_param() . " AND $t_column_project_id = " . db_param();
+
+				$t_result = db_query_bound($t_query, array($t_current_user_id, 0));
+				if ($t_result)
+					$t_result_array = db_fetch_array($t_result);
+			}
 
 			if ($t_result_array) {
 				$t_position_string = $t_result_array[$t_column_positions];
@@ -622,6 +632,16 @@ class DashboardDbAPI
 			$t_result = db_query_bound($t_query, array($t_current_user_id, $t_current_project_id));
 			if ($t_result != false) {
 				$t_result_array = db_fetch_array($t_result);
+				# If there is no project-specific position, we use the global one instead.
+				if (!$t_result_array) {
+					$t_query = "SELECT $t_column_positions
+								FROM $t_dashboard_table
+								WHERE $t_column_user_id = ".db_param() . " AND $t_column_project_id = " . db_param();
+
+					$t_result = db_query_bound($t_query, array($t_current_user_id, 0));
+					if ($t_result)
+						$t_result_array = db_fetch_array($t_result);
+				}
 				$t_position_string = $t_result_array[$t_column_positions];
 
 				if (!empty($t_position_string)) { # position string set => use it!
