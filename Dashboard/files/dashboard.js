@@ -34,7 +34,7 @@ var mainPageLink = 'main_page.php';
 var myViewPageLink = 'my_view_page.php';
 
 var mainDialogWidth = 600;
-var mainDialogHeight = 300;
+var mainDialogHeight = 330;
 var confirmDialogWidth = 300;
 var confirmDialogHeigth = 200;
 
@@ -145,11 +145,15 @@ function setBoxVisibility(data) {
 function createCustomBox() {
 	var boxTitle = jQuery("#create-box-title").val();
 	var boxFilterId = jQuery("#dashboard-new-box-dialog select[name=create-custom-filter-select]").val();
-		
+	var issuesCount = jQuery("#create-box-issues-count").val();	
+	
+	console.log(issuesCount);
+	
 	var actionUrl = customBoxScript;
 	var dataValues = { 
 			title : boxTitle,
 			filter_id: boxFilterId,
+			issues_count: issuesCount,
 			action: 'create'
 			};
 		
@@ -162,12 +166,14 @@ function editCustomBox() {
 	
 	var visible = jQuery("#edit-box-visible-checkbox").prop('checked') ? 1 : 0;	
 	var boxId = jQuery("#delete-box-link input[name=box_id]").val();
+	var issuesCount = jQuery("#edit-box-issues-count").val();
 		
 	var actionUrl = customBoxScript;
 	var dataValues = { title : boxTitle,
 					   filter_id: boxFilterId,
 					   visible: visible,
 					   box_id: boxId,
+					   issues_count: issuesCount,
 					   action: 'edit'
 					   };
 		
@@ -190,6 +196,9 @@ function afterCreateCustomBox(data){
 	// clear fields in dialog for next creation:
 	jQuery("#dashboard-new-box-dialog input[name=box-title]").val("");
 	jQuery("#dashboard-new-box-dialog select[name=create-custom-filter-select] option:eq(0)").attr("selected", "selected");
+	
+	var input = jQuery("#create-box-issues-count");
+	input.val(input.attr('max'));
 };
 
 //call back function after  box editing
@@ -334,8 +343,8 @@ jQuery(document).ready(function() {
 	
 	jQuery("#dashboard-new-box-dialog").dialog({
 		autoOpen: false,
-		height: 300,
-		width: 550,
+		height: 270,
+		width: mainDialogWidth,
 		modal: true,
 		close: function() {
       		//allFields.val("").removeClass("ui-state-error");
@@ -399,13 +408,13 @@ jQuery(document).ready(function() {
       jQuery('select[name=create-custom-filter-select]').val(filterId);
       });
 	
-	jQuery("#create-box").click(function() {
-		jQuery( "#dashboard-new-box-dialog" ).dialog("open");
+	jQuery("#create-box").click(function() {		
+		jQuery("#dashboard-new-box-dialog").dialog("open");
 		});
   
   // delete box
 	jQuery(".dashboard-delete").click(function() {
-		jQuery( "#dialog-confirm" ).dialog("open");
+		jQuery("#dialog-confirm").dialog("open");
 		});
 	
 	//sortable
@@ -471,12 +480,14 @@ jQuery(document).ready(function() {
 		var boxId = form.children('input[name=box_id]').val();
 		var boxTitle = form.children('input[name=orig_box_title]').val();
 		var boxFilterId= form.children('input[name=orig_box_filter_id]').val();
-
+		var issuesCount = form.children('input[name=orig_issues_count]').val();
+		
 		jQuery("#delete-box-link input[name=box_id]").val(boxId);
 		jQuery("#edit-box-title").val(boxTitle);
 		jQuery("#edit-custom-filter-select option[value=" + boxFilterId + "]").attr("selected", "selected");
 		jQuery("#edit-box-visible-checkbox").prop("checked", true);
-			
+		jQuery("#edit-box-issues-count").val(issuesCount);	
+		
 		jQuery("#dashboard-edit-box-dialog").dialog("open");
 	});
 });

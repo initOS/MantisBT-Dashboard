@@ -83,6 +83,8 @@ class DashboardPrintAPI
 	 const ICON_DELETE = "delete.png";
 	 const ICON_ADD = "plus.png";
 
+	 const DEFAULT_ISSUES_COUNT = 10;
+	 
 	/**
 	 * Gets the url links parameters for a current user
 	 *
@@ -861,6 +863,7 @@ class DashboardPrintAPI
 		$t_box_title = $p_box['title'];
 		$t_visible = $p_box['visible'];
 		$t_box_id = $p_box['id'];
+		$t_issues_count = $p_box['issues_count'];
 
 		$f_page_number = gpc_get_int('page_number', 1);
 		$t_per_page = config_get('my_view_bug_count');
@@ -901,12 +904,15 @@ class DashboardPrintAPI
 			$t_rows = filter_get_bug_rows($f_page_number, $t_per_page, $t_page_count, $t_bug_count,
 					$t_unserialized_filter, helper_get_current_project());
 
-			$t_array = self::get_custom_filtered_projects_html($t_filter, $t_rows);
+			$t_original_count = count($t_rows);
+			$t_count = ($t_original_count <= $t_issues_count ? $t_original_count : $t_issues_count);
+			
+			$t_array = self::get_custom_filtered_projects_html($t_filter, $t_rows, $t_count);
 			$t_projects_html = $t_array['projects'];
 
-			if (count($t_rows) > 0) {
+			if ($t_count > 0) {
 				$v_start = $t_filter[FILTER_PROPERTY_ISSUES_PER_PAGE] * ($f_page_number - 1) + 1;
-				$v_end = $v_start + count($t_rows) - 1;
+				$v_end = $t_count;
 			} else {
 				$v_start = 0;
 				$v_end = 0;
@@ -939,7 +945,7 @@ class DashboardPrintAPI
 	 *
 	 * @return Array
 	 */
-	static function get_custom_filtered_projects_html($p_filter, $p_rows)
+	static function get_custom_filtered_projects_html($p_filter, $p_rows, $p_count = self::DEFAULT_ISSUES_COUNT)
 	{
 		$t_rows = $p_rows;
 		$t_filter = $p_filter;
@@ -947,13 +953,12 @@ class DashboardPrintAPI
 		$t_update_bug_threshold = config_get('update_bug_threshold');
 		$t_icon_path = config_get('icon_path');
 
-		# print project table rows
 		$t_html = "";
 
-		# Loop over bug rows and create $v_* variables
-		$t_count = count($t_rows);
+		$t_original_count = count($t_rows);
+		$t_count = ($t_original_count <= $p_count ? $t_original_count : $p_count);
 
-		for ($i = 0;$i < $t_count; $i++) {
+		for ($i = 0;$i < $t_count; $i++) {			
 			$t_bug = $t_rows[$i];
 
 			$t_summary = string_display_line_links($t_bug->summary);
@@ -1045,9 +1050,9 @@ class DashboardPrintAPI
 		}
 
 		# create projects count html
-		if (count($t_rows) > 0) {
+		if ($t_count > 0) {
 			$v_start = $t_filter[FILTER_PROPERTY_ISSUES_PER_PAGE] * ($f_page_number - 1) + 1;
-			$v_end = $v_start + count($t_rows) - 1;
+			$v_end = $t_count;
 		} else {
 			$v_start = 0;
 			$v_end = 0;
@@ -1328,9 +1333,11 @@ class DashboardPrintAPI
 			$t_box = DashboardDbAPI::get_custom_box_data($p_box_id);
 			$t_box_title = $t_box['title'];
 			$t_box_filter_id = $t_box['filter_id'];
+			$t_issues_count = $t_box['issues_count'];
 
 			$t_html .= '<input type="hidden" name="orig_box_title" value="'. $t_box_title.'">';
 			$t_html .= '<input type="hidden" name="orig_box_filter_id" value="'. $t_box_filter_id.'">';
+			$t_html .= '<input type="hidden" name="orig_issues_count" value="' .$t_issues_count . '">';
 		}
 
 		$t_html .= "</form>";
@@ -1549,6 +1556,14 @@ class DashboardPrintAPI
 		# filter select
 		self::print_custom_filter_select_box("create");
 
+		# number of issues select
+		echo '<div class="dialog-form-field">';
+		$t_issues_count = plugin_lang_get('issues_count');
+		echo "<label class='dashboard-label' for='issue-number'>$t_issues_count</label>";
+		echo "<input id='create-box-issues-count' name='issues-count' type='number' " .
+		"min='1' max='10' value='10' title='$t_issues_count' class='dashboard-input'>";
+		echo '</div>';
+		
 		echo "</form>";
 		echo '</div>';
 	}
@@ -1578,21 +1593,30 @@ class DashboardPrintAPI
 		echo '<div class="dialog-form-field">';
 		$t_box_title = plugin_lang_get('box_title');
 		echo "<label class='dashboard-label' for='box-title'>$t_box_title</label>";
-		echo "<input id='edit-box-title' name='box-title' type='text' title='$t_box_title' class='dashboard-input'>";
+		echo "<input id='edit-box-title' name='box-title' type='text' " .
+				"title='$t_box_title' class='dashboard-input'>";
 		echo '</div>';
 
 		# filter select
 		self::print_custom_filter_select_box("edit");
 
+		# number of issues select
+		echo '<div class="dialog-form-field">';
+		$t_issues_count = plugin_lang_get('issues_count');
+		echo "<label class='dashboard-label' for='issue-number'>$t_issues_count</label>";
+		echo "<input id='edit-box-issues-count' name='issues-count' type='number' " . 
+				"min='1' max='10' value='10' title='$t_issues_count' class='dashboard-input'>";
+		echo '</div>';
+		
 		# visibility checkbox
 		echo '<div class="dialog-form-field">';
 		$t_text_show_box = plugin_lang_get('show_box');
 		echo "<label class='dashboard-label' for='box-visible'>$t_text_show_box</label>";
-		#self::print_icon(self::ICON_LINK_SHOW);
-		echo "<input id='edit-box-visible-checkbox' name='box-visible' type='checkbox' title='$t_text_show_box' class='dashboard-input' checked>";
+		echo "<input id='edit-box-visible-checkbox' name='box-visible' type='checkbox' " .
+				"title='$t_text_show_box' class='dashboard-input' checked>";
 		echo '</div>';
-
-		# visibility checkbox
+		
+		# delete link
 		echo '<div id="delete-box-link" class="dialog-form-field">';
 		self::print_icon_link(self::ICON_LINK_DELETE);
 		echo '</div>';

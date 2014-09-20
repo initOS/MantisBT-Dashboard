@@ -97,12 +97,13 @@ function create() {
 	$f_filter_id = gpc_get_int('filter_id', 0);
 	$f_box_id = gpc_get_int('box_id', 0);
 	$f_visible = gpc_get_int('visible', 1);
+	$f_issues_count = gpc_get_int('issues_count', 10);
 
 	if (empty($f_title)) {
 		$f_title = $t_untitled;
 	}
 
-	$t_result_array =  DashboardDbAPI::save_custom_box($f_title, $f_filter_id, $f_box_id, $f_visible);
+	$t_result_array =  DashboardDbAPI::save_custom_box($f_title, $f_filter_id, $f_box_id, $f_visible, null, $f_issues_count);
 	$t_link_item = DashboardPrintAPI::get_visibility_list_item_html($f_box_id);
 
 	$t_return_data = array(

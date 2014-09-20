@@ -722,14 +722,23 @@ class DashboardDbAPI
 	 *
 	 * @return Array
 	 */
-	static function save_custom_box($p_title, $p_filter_id, $p_box_id = 0, $p_visible = 1, $p_project_id = null)
+	static function save_custom_box($p_title, $p_filter_id, $p_box_id = 0, $p_visible = 1, $p_project_id = null, $p_issues_count)
 	{
 		$t_result = "";
 		$t_saved = false;
 
 		$t_current_user_id = auth_get_current_user_id();
 		$t_current_project_id = (is_null($p_project_id) ? helper_get_current_project() : $p_project_id);
-
+		$t_max_count = DashboardPrintAPI::DEFAULT_ISSUES_COUNT;
+		
+		$t_issues_count = $p_issues_count;
+		
+		if ($p_issues_count > $t_max_count) {
+			$t_issues_count = $t_max_count; 
+		} elseif ($p_issues_count < 1) {
+			$t_issues_count = 1;
+		}
+		
 		$t_dashboard_table = plugin_table(self::TABLE_CUSTOM_BOXES);
 
 		$t_column_id = 'id';
@@ -737,16 +746,24 @@ class DashboardDbAPI
 		$t_column_filter_id = 'filter_id';
 		$t_column_project_id = 'project_id';
 		$t_column_title = 'title';
-		$t_column_visible= 'visible';
-
+		$t_column_visible = 'visible';
+		$t_column_issues_count = 'issues_count';
+		
 		# box does not exist so far for current user
 		if ($p_box_id == 0 && $p_filter_id != null && !self::custom_box_exists($p_title, $p_filter_id)) {
 			# save box
-			$t_query = "INSERT INTO $t_dashboard_table
-						($t_column_user_id, $t_column_filter_id, $t_column_title, $t_column_project_id)
-						VALUES (" . db_param() . ',' . db_param() . ','. db_param() . ", " . db_param() . ")";
+			$t_query = "INSERT INTO $t_dashboard_table " .
+						"($t_column_user_id, $t_column_filter_id, $t_column_title," . 
+						" $t_column_project_id, $t_column_issues_count)" .
+						" VALUES (" . db_param() . ',' . db_param() . ','. db_param() . 
+						", " . db_param() . ", " . db_param() . ")";
 
-			$t_query_result = db_query_bound($t_query, array($t_current_user_id, $p_filter_id, $p_title, $t_current_project_id));
+			$t_query_result = db_query_bound($t_query, array(
+					$t_current_user_id, 
+					$p_filter_id, 
+					$p_title, 
+					$t_current_project_id, 
+					$t_issues_count));
 
 			if ($t_query_result != false) {
 				$t_saved = true;
@@ -787,13 +804,21 @@ class DashboardDbAPI
 				}
 			}
 		} else if ($p_box_id != 0 && $p_filter_id != null && self::custom_box_exists_with_id($p_box_id)) {
-			#box exists for current user and should be changed
+			# box exists for current user and should be changed
 			# update box
 			$t_query = "UPDATE $t_dashboard_table
-						SET $t_column_filter_id=".db_param().", $t_column_title=" . db_param() . ", $t_column_visible=" . db_param() .
+						SET $t_column_filter_id=".db_param().", $t_column_title=" . db_param() . 
+						", $t_column_visible=" . db_param() . ", $t_column_issues_count=" . db_param() .
 				  		" WHERE $t_column_user_id=".db_param() . " AND $t_column_id=". db_param();
 
-			$t_query_result = db_query_bound($t_query, array($p_filter_id, $p_title, $p_visible, $t_current_user_id, $p_box_id));
+			$t_query_result = db_query_bound($t_query, array(
+					$p_filter_id, 
+					$p_title, 
+					$p_visible,
+					$t_issues_count,
+					$t_current_user_id, 
+					$p_box_id));
+			
 			$t_updated = (db_num_rows($t_query_result) > 0 || $t_query_result != false);
 
 			DashboardDbAPI::set_custom_box_visibility($p_box_id, $p_visible);
