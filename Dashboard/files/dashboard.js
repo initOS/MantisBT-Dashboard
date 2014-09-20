@@ -177,7 +177,10 @@ function editCustomBox() {
 //call back function after  box creation
 function afterCreateCustomBox(data){
 	if(data["saved"] == true) {
-		jQuery("#dashboard-sortable-col1").prepend("<li>" + data["html"] + "</li>");
+		elementId = "dashboard-list-item-" + data["box_id"];
+		listItem = '<li id="' + elementId +'">' + data["html"] + "</li>";
+		jQuery("#dashboard-sortable-col1").prepend(listItem);
+		saveCustomBoxPositions();
 	} else {
 		jQuery("#error-dialog").html(data["html"]).dialog("open");
 	}

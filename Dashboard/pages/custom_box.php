@@ -107,7 +107,7 @@ function create() {
 
 	$t_return_data = array(
 			"saved" => (boolean)($t_result_array['saved']),
-			"box_id" => $f_box_id,
+			"box_id" => $t_result_array['box_id'],
 			"html" => $t_result_array['html'],
 			"link_show_html" => $t_link_item,
 			"visible" => $f_visible

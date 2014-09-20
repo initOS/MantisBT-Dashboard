@@ -740,7 +740,7 @@ class DashboardDbAPI
 		$t_column_visible= 'visible';
 
 		# box does not exist so far for current user
-		if ($p_box_id == 0 && $p_filter_id != null && !self::custom_box_exists($p_title . $t_column_project_id, $p_filter_id)) {
+		if ($p_box_id == 0 && $p_filter_id != null && !self::custom_box_exists($p_title, $p_filter_id)) {
 			# save box
 			$t_query = "INSERT INTO $t_dashboard_table
 						($t_column_user_id, $t_column_filter_id, $t_column_title, $t_column_project_id)
@@ -818,7 +818,7 @@ class DashboardDbAPI
 			$t_result = DashboardPrintAPI::get_already_available_box_message_html($p_title, $p_filter_id);
 		}
 
-		return array('saved' => $t_saved, 'html' => $t_result);
+		return array('saved' => $t_saved, 'html' => $t_result, 'box_id' => $t_box_id);
 	}
 
 	/**
