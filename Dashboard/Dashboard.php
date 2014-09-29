@@ -31,7 +31,7 @@ class DashboardPlugin extends MantisPlugin
 		$this->description = plugin_lang_get('description');	#description text
 		$this->page = 'config_page';							#configure page file
 
-		$this->version = '0.6.0';     	# Plugin version string
+		$this->version = '0.7.0';     	# Plugin version string
 		$this->requires = array(	   	# Plugin dependencies, array of basename => version pairs
             'MantisCore' => '1.2.0',  	# Should always depend on an appropriate version of MantisBT
             'jQuery' => '1.9.1',		# jQuery for AJAX calls (including jQueryUI v1.10.3)
@@ -106,6 +106,10 @@ class DashboardPlugin extends MantisPlugin
 				array('AddColumnSQL', array(plugin_table('boxes'), "
 						project_id			I		NOTNULL UNSIGNED DEFAULT 0
 				")
+			),	
+				array('AddColumnSQL', array(plugin_table('custom_boxes'), "
+						issues_count		I		NOTNULL UNSIGNED DEFAULT 10
+						")
 			)
 		);
 	}

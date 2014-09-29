@@ -46,6 +46,7 @@ $s_plugin_Dashboard_create_new_box = 'neue Box erstellen';
 $s_plugin_Dashboard_confirm_delete_box = 'Diese Box löschen?';
 $s_plugin_Dashboard_filter = 'Filter';
 $s_plugin_Dashboard_box_title = 'Box-Name';
+$s_plugin_Dashboard_issues_count = 'Angezeigte Fehler';
 $s_plugin_Dashboard_create_new_filter = 'neuen Filter erstellen';
 $s_plugin_Dashboard_no_filters_available = 'Es sind keine erweiterten Filter verfügbar.';
 $s_plugin_Dashboard_untitled = 'unbenannt';

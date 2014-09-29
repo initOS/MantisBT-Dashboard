@@ -7,7 +7,7 @@ Individually per user customizable dashboard for MantisBT bug boxes and custom v
 
 This plugin provides a nice overview of everything that goes on in Mantis. It is a must-have.
 
-It has these features:
+Following features are implemented:
 
 - complete jQuery Interface
 - Classic Mode or Filter-Used Mode
@@ -19,7 +19,7 @@ It has these features:
 Current Version
 -------
 
-0.6.0
+0.7.0
 
 Dependencies
 ------------
@@ -43,6 +43,7 @@ __B) with custom boxes:__
 - create own boxes by naming and choosing a custom filter
 - customizable visibility per bug box & project
 - customizable position per bug box & project (via jQueryUI sortable)
+- customizable number of shown issues per bug box
 
 Boxes which are created under *"All Projects"* are available for all projects. Boxes created in a certain project are just available in this project. Initial boxes are assigned to all projects.
 
@@ -51,7 +52,7 @@ Installation
 
 1. Download the files and place the folder `Dashboard` in the directory `plugins/` of your Mantis installation. 
 2. With administrator privileges, go to the page *"Manage"* / *"Manage Plugins"*
-3. In the list *"Available Plugins"*, you should see *"Dashboard 0.6.0"*: click the install link for the plugin.
+3. In the list *"Available Plugins"*, you should see *"Dashboard 0.7.0"*: click the install link for the plugin.
 
 The Dashboard is now available under the *"Dashboard"* menu entry and is set as the default home page. *"Main"* and *"My View"* menu items are removed by the Dashboard plugin.
 
@@ -62,7 +63,7 @@ You can choose between using the **Classic Mode** and the **Custom Filter-Used M
 
 1. After installation, the plugin should appear in the "*Installed Plugins*" list: click on the name to manage the configuration.
 2. You see a simple switch between *Default Boxes* and *Custom Boxes*.
-3. For *Custom Boxes* you can add initial boxes. These are displayed, if a user has no boxes created in his Dashboard, yet.
+3. For *Custom Boxes* you can add initial boxes. They are displayed, if a user has no boxes created in his Dashboard, yet.
 4. After submitting the settings, you can use the Dashboard page with the specified boxes.
 
 As default configuration the plugin uses the *Custom Filter-Used Mode*.
