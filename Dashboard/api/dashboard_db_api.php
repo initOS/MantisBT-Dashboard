@@ -38,13 +38,16 @@ class DashboardDbAPI
 		$t_column_project_id = 'project_id';
 
 		$t_dashboard_table = '';
+		
 		if($t_default_boxes_view){
 			$t_dashboard_table = plugin_table(self::TABLE_BOXES);
 		} else if($t_custom_boxes_view){
 			$t_dashboard_table = plugin_table(self::TABLE_CUSTOM_BOXES_POSITIONS);
 		}
+		
 		$t_query = "SELECT id FROM $t_dashboard_table
-					WHERE user_id=".db_param() . " AND $t_column_project_id = " . db_param();
+					WHERE user_id=".db_param() . 
+					" AND $t_column_project_id = " . db_param();
 
 		$t_result = db_query_bound($t_query, array($t_current_user_id, $t_current_project_id));
 
@@ -82,18 +85,26 @@ class DashboardDbAPI
 		}
 
 		$t_current_user_id = auth_get_current_user_id();
-
+		$t_current_project_id = helper_get_current_project();
+		
 		$t_column_filter_id = 'filter_id';
 		$t_column_user_id = 'user_id';
 		$t_column_title = 'title';
+		$t_column_project_id = 'project_id';
 
 		$t_dashboard_table = plugin_table(self::TABLE_CUSTOM_BOXES);
 		$t_query = "SELECT id FROM $t_dashboard_table
 					WHERE $t_column_user_id=" . db_param() .
 					" AND $t_column_title=".db_param() .
-					" AND $t_column_filter_id=" . db_param();
+					" AND $t_column_filter_id=" . db_param() .
+					" AND ($t_column_project_id=" . db_param() .
+					" OR $t_column_project_id=0)";
 
-		$t_result = db_query_bound($t_query, array($t_current_user_id, $p_title, $p_filter_id));
+		$t_result = db_query_bound($t_query, array(
+				$t_current_user_id, 
+				$p_title, 
+				$p_filter_id, 
+				$t_current_project_id));
 
 		return (db_num_rows($t_result) > 0);
 	}
@@ -627,16 +638,22 @@ class DashboardDbAPI
 		if (self::user_has_custom_boxes()) {
 			$t_query = "SELECT $t_column_positions
 						FROM $t_dashboard_table
-						WHERE $t_column_user_id = ".db_param() . " AND $t_column_project_id = " . db_param();
+						WHERE $t_column_user_id = ".db_param() . 
+						" AND $t_column_project_id = " . db_param();
 
-			$t_result = db_query_bound($t_query, array($t_current_user_id, $t_current_project_id));
+			$t_result = db_query_bound($t_query, array(
+					$t_current_user_id, 
+					$t_current_project_id));
+			
 			if ($t_result != false) {
 				$t_result_array = db_fetch_array($t_result);
+				
 				# If there is no project-specific position, we use the global one instead.
 				if (!$t_result_array) {
 					$t_query = "SELECT $t_column_positions
 								FROM $t_dashboard_table
-								WHERE $t_column_user_id = ".db_param() . " AND $t_column_project_id = " . db_param();
+								WHERE $t_column_user_id = ".db_param() . 
+								" AND $t_column_project_id = " . db_param();
 
 					$t_result = db_query_bound($t_query, array($t_current_user_id, 0));
 					if ($t_result)
@@ -655,9 +672,12 @@ class DashboardDbAPI
 
 				$t_query = "SELECT $t_column_title, $t_column_id
 							FROM $t_dashboard_table
-							WHERE $t_column_user_id = ".db_param() . " AND $t_column_project_id IN(" . db_param() . ", 0) ";
+							WHERE $t_column_user_id = ".db_param() . 
+							" AND $t_column_project_id IN(" . db_param() . ", 0) ";
 
-				$t_result = db_query_bound($t_query, array($t_current_user_id, $t_current_project_id));
+				$t_result = db_query_bound($t_query, array(
+						$t_current_user_id, 
+						$t_current_project_id));
 
 				if ($t_result != false) {
 					$t_count = 0;
@@ -671,7 +691,10 @@ class DashboardDbAPI
 						$t_column = (($t_count % 3) == 0) ? 3 : ($t_count % 3);
 						$t_title = $t_box['title'];
 						$t_id = $t_box['id'];
-						array_push($t_boxes, array('id' => $t_id, 'title' => $t_title, 'column' => $t_column));
+						array_push($t_boxes, array(
+								'id' => $t_id, 
+								'title' => $t_title, 
+								'column' => $t_column));
 					}
 				}
 			}
